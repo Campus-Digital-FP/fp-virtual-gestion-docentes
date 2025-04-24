@@ -2,8 +2,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="panel-container">
-                <h3 class="text-2xl font-bold text-center">Establecer Coordinador/es</h3>
-                <p class="text-center">Complete el siguiente formulario para establecer o borrar un coordinador.</p>
+                <h3 class="text-2xl font-bold text-center">Establecer Tutor/es</h3>
+                <p class="text-center">Complete el siguiente formulario para establecer o borrar un Tutor.</p>
 
                 <!-- Mensajes de éxito -->
                 @if(session('success'))
@@ -13,7 +13,7 @@
                 @endif
 
                 <!-- Formulario -->
-                <form method="POST" action="{{ route('establecer_coordinador.store') }}">
+                <form method="POST" action="{{ route('establecer_tutor.store') }}">
                     @csrf
 
                     <!-- Seleccionar Ciclo -->
@@ -32,7 +32,7 @@
 
                     <!-- DNI -->
                     <div class="mt-4">
-                        <label for="dni" class="block text-sm font-medium text-gray-700">DNI del Coordinador:</label>
+                        <label for="dni" class="block text-sm font-medium text-gray-700">DNI del tutor:</label>
 
                         <input list="dnis" name="dni" id="dni" class="mt-1 block w-full @error('dni') border-red-500 @enderror" required>
 
@@ -47,15 +47,6 @@
                         @enderror
                     </div>
 
-                    <!-- Checkbox Tutor -->
-                    <div class="mt-4 flex items-center space-x-3">
-                        <!-- Campo oculto para enviar un valor cuando no esté marcado -->
-                        <input type="hidden" name="es_tutor" value="0">
-
-                        <input type="checkbox" name="es_tutor" id="es_tutor" value="1" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                        <label for="es_tutor" class="font-medium text-sm text-gray-700">&nbsp;También es tutor</label>
-                    </div>
-
                     <!-- Botones -->
                     <div class="flex justify-end gap-4 mt-6">
                         <button type="submit" class="border border-black text-black py-2 px-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:opacity-90 hover:bg-gray-100">
@@ -64,8 +55,8 @@
                     </div>
                 </form>
                 <br>
-                <!-- Tabla de coordinadores actuales -->
-                <h4 class="text-xl font-semibold text-gray-800 mt-10 mb-6 text-center">Listado de Coordinadores Actuales</h4>
+                <!-- Tabla de tutores actuales -->
+                <h4 class="text-xl font-semibold text-gray-800 mt-10 mb-6 text-center">Listado de Tutores Actuales</h4>
                 <div class="overflow-x-auto bg-white shadow-md rounded-lg">
                     <table class="min-w-full table-auto text-sm mx-auto">
                         <thead class="bg-gray-100 ">
@@ -79,12 +70,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($coordinadores as $coordinador)
+                            @forelse($tutores as $tutor)
                             <tr class="hover:bg-gray-50 transition" x-data="{ showModal: false }">
-                                <td class="px-6 py-4 border-b">{{ $coordinador->docente->nombre ?? 'No encontrado' }}</td>
-                                <td class="px-6 py-4 border-b">{{ $coordinador->docente->apellido ?? 'No encontrado' }}</td>
-                                <td class="px-6 py-4 border-b">{{ $coordinador->ciclo->nombre }}</td>
-                                <td class="px-6 py-4 border-b">{{ $coordinador->dni }}</td>
+                                <td class="px-6 py-4 border-b">{{ $tutor->docente->nombre ?? 'No encontrado' }}</td>
+                                <td class="px-6 py-4 border-b">{{ $tutor->docente->apellido ?? 'No encontrado' }}</td>
+                                <td class="px-6 py-4 border-b">{{ $tutor->ciclo->nombre }}</td>
+                                <td class="px-6 py-4 border-b">{{ $tutor->dni }}</td>
                                 <td class="px-6 py-4 border-b">
                                     <button
                                         @click="showModal = true"
@@ -99,7 +90,7 @@
                                         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
                                     >
                                         <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                                            <h2 class="text-lg font-semibold mb-4">¿Estás seguro de que quieres borrar este coordinador?</h2>
+                                            <h2 class="text-lg font-semibold mb-4">¿Estás seguro de que quieres borrar este tutor?</h2>
                                             <div class="flex justify-end gap-4">
                                                 <button
                                                     @click="showModal = false"
@@ -107,7 +98,7 @@
                                                 >
                                                     Cancelar
                                                 </button>
-                                                <form method="POST" action="{{ route('establecer_coordinador.destroy', $coordinador->id) }}">
+                                                <form method="POST" action="{{ route('tutor.destroy', $tutor->id) }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
@@ -121,7 +112,7 @@
                             </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="py-4 text-center text-gray-500">No hay coordinadores registrados.</td>
+                                    <td colspan="5" class="py-4 text-center text-gray-500">No hay tutores registrados.</td>
                                 </tr>
                             @endforelse
                         </tbody>

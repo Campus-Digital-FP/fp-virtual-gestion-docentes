@@ -21,7 +21,7 @@
                 <div class="panel-buttons">
                     <a href="{{ route('alta_docente') }}" class="">Dar alta docente</a>
                     <a href="{{ route('establecer_coordinador.index') }}">Establecer coordinador/es</a>
-                    <a href="{{ route('dashboard') }}">Establecer tutor/es</a>
+                    <a href="{{ route('establecer_tutor.index') }}">Establecer tutor/es</a>
                     <a href="{{ route('dashboard') }}">Establecer docencia</a>
                 </div>
             </div>

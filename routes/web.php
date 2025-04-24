@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AltaDocenteController;
 use App\Http\Controllers\EstablecerCoordinadorController;
+use App\Http\Controllers\EstablecerTutorController;
 
 Route::redirect('/', '/login');
 
@@ -35,9 +36,19 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/establecer-coordinador/{id}', [EstablecerCoordinadorController::class, 'destroy'])
     ->name('establecer_coordinador.destroy');
+});
 
-    Route::resource('establecer_coordinador', EstablecerCoordinadorController::class);
 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/establecer-tutor', [EstablecerTutorController::class, 'index'])
+    ->name('establecer_tutor.index');
+
+    Route::post('/establecer-tutor', [EstablecerTutorController::class, 'store'])
+    ->name('establecer_tutor.store');
+
+    Route::delete('/tutor/{id}', [EstablecerTutorController::class, 'destroy'])
+    ->name('tutor.destroy');
 });
 
 require __DIR__.'/auth.php';
