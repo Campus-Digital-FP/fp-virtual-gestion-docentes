@@ -26,6 +26,7 @@ Esto hará lo siguiente:
 - Genera la clave de la app
 - Crea y llena las tablas de la base de datos
 - Levanta el servidor
-
+  
+PD: Usuario: Admin | Contraseña: 12345678
 Cualquier cosa, mandarme un correo o lo que sea ^^
 
