@@ -2,43 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Docente;  // Asegúrate de importar el modelo Docente
+use App\Models\Docente;  
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CentroDocente;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+
 
 class AltaDocenteController extends Controller
 {
-    // Método para mostrar el formulario
     public function create()
     {
-        return view('alta_docente');
+        $centro = Auth::user()->centro;
+        return view('alta_docente', compact('centro'));
     }
 
-    // Método para almacenar los datos del docente
     public function store(Request $request)
     {
-        // Validación de los datos
-        $validator = Validator::make($request->all(), [
-            'dni' => 'required|unique:docentes,dni|max:10', // Validación del DNI
-            'email' => 'required|email|unique:docentes,email', // Validación del email
-            'nombre' => 'required|string|max:255', // Validación del nombre
-            'apellido' => 'required|string|max:255', // Validación del apellido
+        $request->validate([
+            'dni' => 'required|string|max:10',
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'email' => 'required|email',
+            'id_centro' => 'required|string',
         ]);
 
-        // Si la validación falla, redirige con los errores
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        DB::beginTransaction();
+
+        try {
+            // Convertir el DNI a minúsculas
+            $dni = strtolower($request->dni);
+
+            // Lógica de creación del docente
+            $docente = Docente::where('dni', $dni)->first();
+
+            if (!$docente) {
+                $docente = Docente::create([
+                    'dni' => $dni,
+                    'nombre' => $request->nombre,
+                    'apellido' => $request->apellido,
+                ]);
+            }
+
+            // Verificar si ya está asignado al centro
+            $yaExiste = CentroDocente::where('dni', $dni)
+                ->where('id_centro', $request->id_centro)
+                ->exists();
+
+            if ($yaExiste) {
+                return redirect()->back()
+                    ->withErrors(['dni' => 'Este docente ya está asignado a este centro.'])
+                    ->withInput();
+            }
+
+            // Si no existe, creamos la relación
+            CentroDocente::create([
+                'dni' => $dni,
+                'id_centro' => $request->id_centro,
+                'email' => $request->email,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('dashboard')->with('alta_docente_correcto', 'Docente asignado correctamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Hubo un error al guardar el docente.'])
+                ->withInput();
+        }
+    }
+
+    
+
+    public function comprobarDocente($dni)
+    {
+        $docente = \App\Models\Docente::where('dni', $dni)->first();
+
+        if ($docente) {
+            return response()->json([
+                'existe' => true,
+                'nombre' => $docente->nombre,
+                'apellido' => $docente->apellido,
+            ]);
         }
 
-        // Guardar los datos en la base de datos
-        Docente::create([
-            'dni' => $request->dni,
-            'email' => $request->email,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-        ]);
-
-        // Redirigir con un mensaje de éxito
-        return redirect()->route('dashboard')->with('alta_docente_correcto', 'Docente dado de alta correctamente.');
+        return response()->json(['existe' => false]);
     }
 }

@@ -22,4 +22,11 @@ class Centro extends Model
     {
         return $this->hasMany(Usuario::class, 'id_centro');
     }
+
+    public function docentes()
+{
+    return $this->belongsToMany(Docente::class, 'centro_docente', 'id_centro', 'dni')
+                ->withPivot('email');
+}
+
 }

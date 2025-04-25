@@ -55,6 +55,7 @@ class Usuario extends Authenticatable
      */
     public function centro()
     {
-        return $this->belongsTo(Centro::class, 'id_centro');
+        return $this->belongsTo(Centro::class, 'id_centro', 'id_centro');
     }
+
 }

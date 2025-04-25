@@ -19,13 +19,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/alta-docente', [AltaDocenteController::class, 'create'])
-    ->middleware('auth')
-    ->name('alta_docente');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/alta-docente', [AltaDocenteController::class, 'create'])
+        ->name('alta_docente');
 
-Route::post('/alta-docente', [AltaDocenteController::class, 'store'])
-    ->middleware('auth')
-    ->name('alta_docente.store');
+    Route::post('/alta-docente', [AltaDocenteController::class, 'store'])
+        ->name('alta_docente.store');
+    Route::get('/comprobar-docente/{dni}', [AltaDocenteController::class, 'comprobarDocente']);
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/establecer-coordinador', [EstablecerCoordinadorController::class, 'index'])
