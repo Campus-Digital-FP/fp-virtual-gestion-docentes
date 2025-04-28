@@ -19,45 +19,56 @@ class AltaDocenteController extends Controller
         return view('alta_docente', compact('centro'));
     }
 
+
     public function store(Request $request)
     {
-        $request->validate([
-            'dni' => 'required|string|max:10',
+        $dni = strtolower($request->dni);
+
+        
+        $validator = Validator::make($request->all(), [
+            //Comprueba si ese DNI existe en el centro
+            'dni' => [
+                'required',
+                'string',
+                'max:10',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (CentroDocente::where('dni', strtolower($value))
+                        ->where('id_centro', $request->id_centro)
+                        ->exists()) {
+                        $fail('Este docente ya está asignado a este centro.');
+                    }
+                },
+            ],
+            //Comprueba si el email existe
+            'email' => [
+                'required',
+                'email',
+                function ($attribute, $value, $fail) {
+                    if (CentroDocente::where('email', $value)->exists()) {
+                        $fail('Este correo electrónico ya está registrado.');
+                    }
+                },
+            ],
+
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
-            'email' => 'required|email',
             'id_centro' => 'required|string',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         DB::beginTransaction();
 
         try {
-            // Convertir el DNI a minúsculas
-            $dni = strtolower($request->dni);
+            // Crear el docente si no existe
+            $docente = Docente::firstOrCreate(
+                ['dni' => $dni],
+                ['nombre' => $request->nombre, 'apellido' => $request->apellido]
+            );
 
-            // Lógica de creación del docente
-            $docente = Docente::where('dni', $dni)->first();
-
-            if (!$docente) {
-                $docente = Docente::create([
-                    'dni' => $dni,
-                    'nombre' => $request->nombre,
-                    'apellido' => $request->apellido,
-                ]);
-            }
-
-            // Verificar si ya está asignado al centro
-            $yaExiste = CentroDocente::where('dni', $dni)
-                ->where('id_centro', $request->id_centro)
-                ->exists();
-
-            if ($yaExiste) {
-                return redirect()->back()
-                    ->withErrors(['dni' => 'Este docente ya está asignado a este centro.'])
-                    ->withInput();
-            }
-
-            // Si no existe, creamos la relación
+            // Asignar el docente al centro
             CentroDocente::create([
                 'dni' => $dni,
                 'id_centro' => $request->id_centro,
@@ -67,17 +78,14 @@ class AltaDocenteController extends Controller
             DB::commit();
 
             return redirect()->route('dashboard')->with('alta_docente_correcto', 'Docente asignado correctamente.');
+
         } catch (\Exception $e) {
             DB::rollBack();
-
-            return redirect()->back()
-                ->withErrors(['error' => 'Hubo un error al guardar el docente.'])
-                ->withInput();
+            return redirect()->back()->withErrors(['error' => 'Hubo un error al guardar el docente.'])->withInput();
         }
     }
 
-    
-
+    //Comprueba si el dni existe para autocompletar los campos 'Nombre' y 'Apellido'
     public function comprobarDocente($dni)
     {
         $docente = \App\Models\Docente::where('dni', $dni)->first();

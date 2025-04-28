@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CentroDocente extends Model
 {
-    protected $table = 'centro_docente'; // nombre exacto de la tabla
-    public $timestamps = false; // desactiva timestamps si no los tienes
+    protected $table = 'centro_docente'; 
+    public $timestamps = false; 
 
     protected $fillable = [
         'dni',
