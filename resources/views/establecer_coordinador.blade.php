@@ -12,6 +12,18 @@
                     </div>
                 @endif
 
+                <!-- Mostrar errores generales -->
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+                        <strong>Error:</strong>
+                        <ul class="list-disc ml-6 mt-2">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <!-- Formulario -->
                 <form method="POST" action="{{ route('establecer_coordinador.store') }}">
                     @csrf
@@ -25,26 +37,18 @@
                                 <option value="{{ $ciclo->id_ciclo }}">{{ $ciclo->nombre }}</option>
                             @endforeach
                         </select>
-                        @error('id_ciclo')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
                     </div>
 
-                    <!-- DNI -->
+                    <!-- Docentes -->
                     <div class="mt-4">
-                        <label for="dni" class="block text-sm font-medium text-gray-700">DNI del Coordinador:</label>
+                        <label for="dni" class="block text-sm font-medium text-gray-700">Seleccionar Coordinador:</label>
 
-                        <input list="dnis" name="dni" id="dni" class="mt-1 block w-full @error('dni') border-red-500 @enderror" required>
-
-                        <datalist id="dnis">
-                            @foreach($dnis as $dni)
-                                <option value="{{ $dni }}">
-                            @endforeach
-                        </datalist>
-
-                        @error('dni')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
+                        <select name="dni" id="dni" required class="mt-1 block w-full @error('dni') border-red-500 @enderror">
+                        <option value="">-- Selecciona un docente --</option>
+                        @foreach ($docentes as $docente)
+                            <option value="{{ $docente->dni }}">{{ $docente->nombre }} {{ $docente->apellido }} - {{ $docente->dni }}</option>
+                        @endforeach
+                    </select>
                     </div>
 
                     <!-- Checkbox Tutor -->
@@ -99,7 +103,7 @@
                                         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
                                     >
                                         <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                                            <h2 class="text-lg font-semibold mb-4">¿Estás seguro de que quieres borrar este coordinador?</h2>
+                                            <h2 class="text-lg mb-4">¿Estás seguro de que quieres borrar a <b>{{ $coordinador->docente->nombre }} {{ $coordinador->docente->apellido }} </b>del ciclo <b>{{ $coordinador->ciclo->nombre }}</b>?</h2>
                                             <div class="flex justify-end gap-4">
                                                 <button
                                                     @click="showModal = false"

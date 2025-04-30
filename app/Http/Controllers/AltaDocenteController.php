@@ -55,6 +55,7 @@ class AltaDocenteController extends Controller
             'id_centro' => 'required|string',
         ]);
 
+        //Si da algun error
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }

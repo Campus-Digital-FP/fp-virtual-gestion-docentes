@@ -23,9 +23,13 @@ class EstablecerTutorController extends Controller
             });
 
         $ciclos = $centro->ciclos;
-        $dnis = \App\Models\Docente::pluck('dni');
+        $docentes = \App\Models\Docente::whereIn('dni', function ($query) use ($centro) {
+            $query->select('dni')
+                  ->from('centro_docente')
+                  ->where('id_centro', $centro->id_centro);
+        })->get(['dni', 'nombre', 'apellido']);
 
-        return view('establecer_tutor', compact('ciclos', 'tutores', 'dnis'));
+        return view('establecer_tutor', compact('ciclos', 'tutores', 'docentes'));
     }
 
     public function store(Request $request)

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coordinador;
 use App\Models\Ciclo;
-use App\Models\Tutor; // Asegúrate de tener el modelo Tutor
+use App\Models\Tutor; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,9 +26,16 @@ class EstablecerCoordinadorController extends Controller
         // Ciclos del centro
         $ciclos = $centro->ciclos;
         
-        $dnis = \App\Models\Docente::pluck('dni');
+        //
+        $docentes = \App\Models\Docente::whereIn('dni', function ($query) use ($centro) {
+            $query->select('dni')
+                  ->from('centro_docente')
+                  ->where('id_centro', $centro->id_centro);
+        })->get(['dni', 'nombre', 'apellido']);
         
-        return view('establecer_coordinador', compact('ciclos', 'coordinadores', 'dnis'));
+
+        
+        return view('establecer_coordinador', compact('ciclos', 'coordinadores', 'docentes'));
 
     }
 
@@ -51,20 +58,26 @@ class EstablecerCoordinadorController extends Controller
             return redirect()->back()->withErrors(['dni' => 'Este coordinador ya está asignado a ese ciclo.']);
         }
 
+        // Si también es tutor, se guarda en la tabla de tutores
+        if ($request->es_tutor == 1) {
+            $tutor = Tutor::firstOrCreate([
+                'id_centro' => $idCentro,
+                'id_ciclo' => $request->id_ciclo,
+                'dni' => $request->dni,
+            ]);
+
+            // Si NO fue recién creado, significa que ya existía
+            if (!$tutor->wasRecentlyCreated) {
+                return redirect()->back()->withErrors(['ciclo' => 'Este docente ya es tutor de ese ciclo.']);
+            }
+        }
+
+        //Se crea el coordinador
         Coordinador::create([
             'id_centro' => $idCentro,
             'id_ciclo' => $request->id_ciclo,            
             'dni' => $request->dni,
         ]);
-
-        // Si también es tutor, se guarda en la tabla de tutores
-        if ($request->es_tutor == 1) {
-            Tutor::create([
-                'id_centro' => $idCentro,
-                'id_ciclo' => $request->id_ciclo,
-                'dni' => $request->dni,
-            ]);
-        }
 
         return redirect()->route('establecer_coordinador.index')->with('success', 'Coordinador añadido correctamente.');
     }
