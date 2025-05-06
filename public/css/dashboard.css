@@ -6,6 +6,23 @@
     box-shadow: 0 4px 12px rgba(46, 44, 44, 0.2);
 }
 
+/* Textos */
+.alta-title {
+    color: #2d3748;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.alta-subtitle {
+    color: #4a5568;
+    font-size: 1.15rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+}
+
 .panel-buttons {
     display: flex;
     flex-direction: column; 
@@ -31,4 +48,29 @@
     transform: scale(1.05); 
     opacity: 0.9; 
     background-color: #f0f0f0; 
+}
+
+/* Alinear Iconos */
+.icon-alineado {
+    display: inline-block;
+    width: 1.5em; 
+    text-align: center;
+    margin-right: 0.5em;
+}
+
+/* Alertas */
+.alert-success {
+    background-color: #f0fff4;
+    color: #276749;
+    border-left: 4px solid #48bb78;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .panel-buttons {
+        grid-template-columns: 1fr;
+    }
 }

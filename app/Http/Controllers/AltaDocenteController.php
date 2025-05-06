@@ -26,11 +26,11 @@ class AltaDocenteController extends Controller
 
         
         $validator = Validator::make($request->all(), [
-            //Comprueba si ese DNI existe en el centro
-            'dni' => [
+           'dni' => [
                 'required',
                 'string',
                 'max:10',
+                'regex:/^(\d{8}|[XYZ]\d{7})[A-Z]$/i',
                 function ($attribute, $value, $fail) use ($request) {
                     if (CentroDocente::where('dni', strtolower($value))
                         ->where('id_centro', $request->id_centro)
@@ -39,6 +39,7 @@ class AltaDocenteController extends Controller
                     }
                 },
             ],
+
             //Comprueba si el email existe
             'email' => [
                 'required',

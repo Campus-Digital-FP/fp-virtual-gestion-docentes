@@ -1,0 +1,196 @@
+/* Estructura principal */
+.alta-panel {
+    background-color: white; 
+    color: black;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(46, 44, 44, 0.2);
+}
+
+/* Textos */
+.alta-title {
+    color: #2d3748;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.alta-subtitle {
+    color: #4a5568;
+    font-size: 1.15rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+}
+
+/* Formulario */
+.alta-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.alta-form-group {
+    margin-bottom: 1.75rem;
+}
+
+.alta-label {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 0.95rem;
+}
+
+.alta-input {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #f8fafc;
+}
+
+.alta-input:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+    background-color: #ffffff;
+}
+
+.alta-input-error {
+    border-color: #f56565;
+    background-color: #fff5f5;
+}
+
+.alta-error-message {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #e53e3e;
+}
+
+/* Botones */
+.alta-form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2.5rem;
+}
+
+.alta-button {
+    padding: 0.85rem 1.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alta-button-primary {
+    background-color: #48bb78;
+    color: white;
+    border: none;
+}
+
+.alta-button-primary:hover {
+    background-color: #38a169;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(66, 153, 225, 0.2);
+}
+
+.alta-button-secondary {
+    background-color: #e2e8f0;
+    color: #2d3748;
+    border: 1px solid #cbd5e0;
+}
+
+.alta-button-secondary:hover {
+    background-color: #cbd5e0;
+    border-color: #a0aec0;
+    transform: translateY(-2px);
+}
+
+/* Alertas */
+.alta-alert {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+}
+
+.alta-alert-success {
+    background-color: #f0fff4;
+    color: #276749;
+    border-left: 4px solid #48bb78;
+}
+
+.alta-alert-error {
+    background-color: #fff5f5;
+    color: #9b2c2c;
+    border-left: 4px solid #f56565;
+}
+
+.alta-error-list {
+    list-style-type: disc;
+    margin-top: 0.75rem;
+    padding-left: 1.5rem;
+}
+.alta-alert-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.alta-alert-message {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.alta-error-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin: 0;
+    color: #9b2c2c;
+    font-size: 0.95rem;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .alta-panel {
+        padding: 1.75rem;
+    }
+    
+    .alta-title {
+        font-size: 1.6rem;
+    }
+    
+    .alta-form-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .alta-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .alta-panel {
+        padding: 1.5rem;
+        border-radius: 10px;
+    }
+    
+    .alta-input {
+        padding: 0.75rem 1rem;
+    }
+}

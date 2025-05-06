@@ -1,101 +1,124 @@
 <x-app-layout>
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('css/altaDocente.css') }}">
+    @endpush
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="panel-container">
-                <h3 class="text-2xl font-bold text-center">Dar Alta Docente</h3>
-                <p class="text-center">Complete el siguiente formulario para dar de alta a un docente.</p>
+            <div class="alta-panel">
+                <h3 class="alta-title">Dar Alta Docente</h3>
+                <p class="alta-subtitle">Complete el siguiente formulario para dar de alta a un docente en el sistema.</p>
 
-                <!-- Mostrar errores generales -->
                 @if ($errors->any())
-                    <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                        <strong>Error:</strong>
-                        <ul class="list-disc ml-6 mt-2">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                    <div class="alta-alert alta-alert-error">
+                        <div class="alta-alert-content">
+                            <p class="alta-alert-message">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                <strong>ERROR:</strong>
+                            </p>
+                            <!-- <ul class="alta-error-list">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul> -->
+                        </div>
                     </div>
                 @endif
 
-                <!-- Formulario para alta docente -->
-                <form method="POST" action="{{ route('alta_docente.store') }}">
+                <form method="POST" action="{{ route('alta_docente.store') }}" class="alta-form">
                     @csrf
-                    <div class="mt-4">
-                        <label for="dni" class="block text-sm font-medium text-gray-700">DNI:</label>
-                        <input type="text" name="dni" id="dni" class="mt-1 block w-full @error('dni') border-red-500 @enderror" required>
+                    
+                    <div class="alta-form-group">
+                        <label for="dni" class="alta-label">
+                            <i class="fas fa-id-card mr-1"></i> DNI:
+                        </label>
+                        <input type="text" name="dni" id="dni" 
+                            class="alta-input @error('dni') alta-input-error @enderror" 
+                            required placeholder="Ej: 12345678A">
+                        @error('dni')
+                            <p class="alta-error-message">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                     <div class="mt-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico:</label>
-                        <input type="email" name="email" id="email" class="mt-1 block w-full @error('email') border-red-500 @enderror"  required>
+                    <div class="alta-form-group">
+                        <label for="email" class="alta-label">
+                            <i class="fas fa-envelope mr-1"></i> Correo Electrónico:
+                        </label>
+                        <input type="email" name="email" id="email" 
+                            class="alta-input @error('email') alta-input-error @enderror" 
+                            required placeholder="docente@ejemplo.com">
+                        @error('email')
+                            <p class="alta-error-message">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <div class="mt-4">
-                        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre:</label>
-                        <input type="text" name="nombre" id="nombre" class="mt-1 block w-full @error('nombre') border-red-500 @enderror" required>
+                    <div class="alta-form-group">
+                        <label for="nombre" class="alta-label">
+                            <i class="fas fa-user mr-1"></i> Nombre:
+                        </label>
+                        <input type="text" name="nombre" id="nombre" 
+                            class="alta-input @error('nombre') alta-input-error @enderror" 
+                            required placeholder="Nombre del docente">
                     </div>
 
-                    <div class="mt-4">
-                        <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido:</label>
-                        <input type="text" name="apellido" id="apellido" class="mt-1 block w-full @error('apellido') border-red-500 @enderror" required>
+                    <div class="alta-form-group">
+                        <label for="apellido" class="alta-label">
+                            <i class="fas fa-user-tag mr-1"></i> Apellido:
+                        </label>
+                        <input type="text" name="apellido" id="apellido" 
+                            class="alta-input @error('apellido') alta-input-error @enderror" 
+                            required placeholder="Apellido del docente">
                     </div>
                     
-                    <!-- Campo oculto para el id_centro -->
                     <input type="hidden" name="id_centro" value="{{ $centro->id_centro }}">
 
-                    <div class="flex justify-center mt-4">
-                        <button type="submit" class="border border-black text-black py-2 px-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:opacity-90 hover:bg-gray-100">
-                            Dar de Alta
-                        </button>
-                    </div>
-                    <div class="flex justify-end mt-4">
-                        <a href="{{ route('dashboard') }}" class="border border-black text-black py-2 px-4 rounded-lg text-center transition-all duration-300 hover:scale-105 hover:opacity-90 hover:bg-gray-100">
-                            Volver 
+                    <div class="alta-form-actions">
+                        <a href="{{ route('dashboard') }}" class="alta-button alta-button-secondary">
+                            <i class="fas fa-arrow-left mr-2"></i> Volver al panel
                         </a>
+                        <button type="submit" class="alta-button alta-button-primary">
+                            <i class="fas fa-user-plus mr-2"></i> Guardar docente
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    
+    <!-- Script para autocompletar los campos nombre y apellido -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const dniInput = document.getElementById('dni');
             const nombreInput = document.getElementById('nombre');
             const apellidoInput = document.getElementById('apellido');
 
-            // Asegurarse de que el DNI no tenga caracteres especiales
-            dniInput.addEventListener('input', () => {
-                let dni = dniInput.value;
-
-                // Eliminar todo lo que no sea número o letra
-                dni = dni.replace(/[^a-zA-Z0-9]/g, '');
-                dniInput.value = dni;
-            });
-
-            //Completa los campos nombre y apellido si existe el dni 
+            // Autocompletar
             dniInput.addEventListener('blur', () => {
                 const dni = dniInput.value.trim();
-
-                if (dni === '') return;
+                if (!dni) return;
 
                 fetch(`/comprobar-docente/${dni}`)
-                    .then(response => response.json())
+                    .then(response => response.ok ? response.json() : Promise.reject())
                     .then(data => {
                         if (data.existe) {
                             nombreInput.value = data.nombre;
                             apellidoInput.value = data.apellido;
-
                             nombreInput.readOnly = true;
                             apellidoInput.readOnly = true;
+                            if (data.nombre && data.apellido) {
+                                alert(`Datos autocompletados: ${data.nombre} ${data.apellido}`);
+                            }
                         } else {
-                            nombreInput.value = '';
-                            apellidoInput.value = '';
-
-                            nombreInput.readOnly = false;
-                            apellidoInput.readOnly = false;
+                            [nombreInput, apellidoInput].forEach(input => {
+                                input.value = '';
+                                input.readOnly = false;
+                            });
                         }
                     })
-                    .catch(error => console.error('Error en la petición AJAX:', error));
+                    .catch(error => {
+                        console.error('Error:', error);
+                        [nombreInput, apellidoInput].forEach(input => input.readOnly = false);
+                    });
             });
         });
     </script>

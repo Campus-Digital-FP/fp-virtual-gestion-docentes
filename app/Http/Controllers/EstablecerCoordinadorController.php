@@ -10,18 +10,27 @@ use Illuminate\Support\Facades\Auth;
 
 class EstablecerCoordinadorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        
+
         $user = Auth::user();
         $centro = $user->centro;
     
-        // Cargar los coordinadores junto con los nombres de ciclos y centros ( Ordenador por nombre y apellidos )
+        // Obtener el campo de ordenación (por defecto 'nombre')
+        $sortField = $request->input('sort', 'nombre');
+
+        // Se ordena dependiendo el campo que hayamos seleccionado
         $coordinadores = Coordinador::with('ciclo', 'centro', 'docente')
         ->where('id_centro', $centro->id_centro)
-        ->get()
-        ->sortBy(function ($coordinador) {
-            return strtolower($coordinador->docente->nombre . ' ' . $coordinador->docente->apellidos);
-        });
+        ->get();
+    
+        $coordinadores = match ($sortField) {
+            'ciclo' => $coordinadores->sortBy(fn($c) => strtolower($c->ciclo->nombre)),
+            'nombre' => $coordinadores->sortBy(fn($c) => [strtolower($c->docente->nombre), strtolower($c->docente->apellido)]),
+            'apellido' => $coordinadores->sortBy(fn($c) => [strtolower($c->docente->apellido), strtolower($c->docente->nombre)]),
+            default => $coordinadores->sortBy(fn($c) => strtolower($c->docente->$sortField)),
+        };
 
         // Ciclos del centro
         $ciclos = $centro->ciclos;
@@ -35,7 +44,7 @@ class EstablecerCoordinadorController extends Controller
         
 
         
-        return view('establecer_coordinador', compact('ciclos', 'coordinadores', 'docentes'));
+        return view('establecer_coordinador', compact('ciclos', 'coordinadores', 'docentes', 'sortField'));
 
     }
 
