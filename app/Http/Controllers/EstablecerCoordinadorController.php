@@ -92,12 +92,28 @@ class EstablecerCoordinadorController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         $coordinador = Coordinador::findOrFail($id);
+        
+        // Verificar si también es tutor en el mismo ciclo
+        $esTutor = Tutor::where('id_centro', $coordinador->id_centro)
+                    ->where('id_ciclo', $coordinador->id_ciclo)
+                    ->where('dni', $coordinador->dni)
+                    ->exists();
+        
+        // Si viene la opción de eliminar tutor y efectivamente es tutor
+        if ($request->has('eliminar_tutor') && $esTutor) {
+            Tutor::where('id_centro', $coordinador->id_centro)
+                ->where('id_ciclo', $coordinador->id_ciclo)
+                ->where('dni', $coordinador->dni)
+                ->delete();
+        }
+        
         $coordinador->delete();
 
-        return redirect()->back()->with('success', 'Coordinador eliminado correctamente.');
+        return redirect()->back()->with('success', 'Coordinador eliminado correctamente' . 
+            ($request->has('eliminar_tutor') && $esTutor ? ' y también se ha eliminado como tutor' : ''));
     }
 
 }
