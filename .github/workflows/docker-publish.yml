@@ -27,4 +27,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/fp-virtual-gestion-docentes:latest
+          tags: campusdigitalfp/fp-virtual-gestion-docentes:latest
