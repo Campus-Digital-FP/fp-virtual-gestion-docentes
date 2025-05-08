@@ -31,6 +31,11 @@
                         {{ __('Establecer Tutor/es') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('establecer_docencia.index')" :active="request()->routeIs('establecer_docencia.index')">
+                        {{ __('Establecer Docencia') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -97,6 +102,11 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('establecer_tutor.index')" :active="request()->routeIs('establecer_tutor.index')">
                 {{ __('Establecer Tutor/es') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('establecer_docencia.index')" :active="request()->routeIs('establecer_docencia.index')">
+                {{ __('Establecer Docencia') }}
             </x-responsive-nav-link>
         </div>
         <!-- Responsive Settings Options -->

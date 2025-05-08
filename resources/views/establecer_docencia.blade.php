@@ -6,11 +6,11 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="panel">
-                <h3 class="title">Establecer Coordinador/es</h3>
-                <p class="subtitle">Complete el siguiente formulario para establecer o borrar un coordinador.</p>
+                <h3 class="title">Establecer Docencia</h3>
+                <p class="subtitle">Complete el siguiente formulario para asignar docencia a un profesor.</p>
 
                 <!-- Formulario -->
-                <form method="POST" action="{{ route('establecer_coordinador.store') }}" class="form">
+                <form method="POST" action="{{ route('establecer_docencia.store') }}" class="form">
                     @if(session('success'))
                         <div class="alert alert-success">
                             <i class="fas fa-check-circle mr-2"></i>
@@ -44,8 +44,18 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="id_modulo" class="label">
+                            <i class="fas fa-book mr-1"></i> Seleccionar Módulo:
+                        </label>
+                        <select name="id_modulo" id="id_modulo" required class="select @error('id_modulo') input-error @enderror">
+                            <option value="">-- Selecciona un módulo --</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
                         <label for="dni" class="label">
-                            <i class="fas fa-user-tie mr-1"></i> Seleccionar Coordinador:
+                            <i class="fas fa-user-tie mr-1"></i> Seleccionar Docente:
                         </label>
                         <select name="dni" id="dni" required class="select @error('dni') input-error @enderror">
                             <option value="">-- Selecciona un docente --</option>
@@ -55,14 +65,6 @@
                         </select>
                     </div>
 
-                    <div class="checkbox-group">
-                        <input type="hidden" name="es_tutor" value="0">
-                        <input type="checkbox" name="es_tutor" id="es_tutor" value="1" class="checkbox">
-                        <label for="es_tutor" class="checkbox-label">
-                            <i class="fas fa-chalkboard-teacher mr-1"></i> También es tutor
-                        </label>
-                    </div>
-
                     <div class="form-actions">
                         <button type="submit" class="button button-primary">
                             <i class="fas fa-user-plus mr-2"></i> Establecer
@@ -70,15 +72,15 @@
                     </div>
                 </form>
 
-                <!-- Tabla de coordinadores actuales -->
+                <!-- Tabla de docencias actuales -->
                 <h4 class="table-title">
-                    <i class="fas fa-list-ol mr-2"></i> Listado de Coordinadores Actuales
+                    <i class="fas fa-list-ol mr-2"></i> Listado de Docencias Actuales
                 </h4>
 
                 <div class="table-container" 
                     x-data="{ 
                         search: '', 
-                        count: {{ count($coordinadores) }},
+                        count: {{ count($docencias) }},
                         async updateCount() {
                             await this.$nextTick(); 
                             this.count = Array.from(this.$refs.tableBody.querySelectorAll('tr')).filter(tr => {
@@ -96,7 +98,7 @@
                             <input
                                 x-model="search"
                                 type="text"
-                                placeholder="Buscar coordinadores..."
+                                placeholder="Buscar docencias..."
                                 class="search-input"
                                 @keyup.escape="search = ''"
                             />
@@ -109,31 +111,35 @@
                             </button>
                         </div>
                         <div x-show="search.length > 0" class="search-count">
-                            Mostrando <span x-text="count"></span> de {{ count($coordinadores) }} coordinadores
+                            Mostrando <span x-text="count"></span> de {{ count($docencias) }} docencias
                         </div>
-
                     </div>
 
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="{{ route('establecer_coordinador.index', ['sort' => 'nombre']) }}">
+                                    <a href="{{ route('establecer_docencia.index', ['sort' => 'nombre']) }}">
                                         <i class="fas fa-user mr-1"></i> Nombre
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ route('establecer_coordinador.index', ['sort' => 'apellido']) }}">
+                                    <a href="{{ route('establecer_docencia.index', ['sort' => 'apellido']) }}">
                                         <i class="fas fa-user-tag mr-1"></i> Apellidos
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ route('establecer_coordinador.index', ['sort' => 'ciclo']) }}">
+                                    <a href="{{ route('establecer_docencia.index', ['sort' => 'ciclo']) }}">
                                         <i class="fas fa-graduation-cap mr-1"></i> Ciclo
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="{{ route('establecer_coordinador.index', ['sort' => 'dni']) }}">
+                                    <a href="{{ route('establecer_docencia.index', ['sort' => 'modulo']) }}">
+                                        <i class="fas fa-book mr-1"></i> Módulo
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{{ route('establecer_docencia.index', ['sort' => 'dni']) }}">
                                         <i class="fas fa-id-card mr-1"></i> DNI
                                     </a>
                                 </th>
@@ -141,22 +147,22 @@
                             </tr>
                         </thead>
                         <tbody x-ref="tableBody">
-                            @forelse($coordinadores as $coordinador)
+                            @forelse($docencias as $docencia)
                                 <tr x-data="{ showModal: false }"
                                 x-show="
                                 (
-                                    '{{ strtolower($coordinador->docente->nombre . ' ' . $coordinador->docente->apellido . ' ' . $coordinador->ciclo->nombre . ' ' . $coordinador->dni) }}'
+                                    '{{ strtolower($docencia->docente->nombre . ' ' . $docencia->docente->apellido . ' ' . $docencia->ciclo->nombre . ' ' . $docencia->modulo->nombre . ' ' . $docencia->dni) }}'
                                 ).includes(search.toLowerCase())
                                 ">
-                                    <td>{{ $coordinador->docente->nombre ?? 'No encontrado' }}</td>
-                                    <td>{{ $coordinador->docente->apellido ?? 'No encontrado' }}</td>
-                                    <td>{{ $coordinador->ciclo->nombre }}</td>
-                                    <td class="uppercase">{{ $coordinador->dni }}</td>
+                                    <td>{{ $docencia->docente->nombre ?? 'No encontrado' }}</td>
+                                    <td>{{ $docencia->docente->apellido ?? 'No encontrado' }}</td>
+                                    <td>{{ $docencia->ciclo->nombre }}</td>
+                                    <td>{{ $docencia->modulo->nombre }}</td>
+                                    <td class="uppercase">{{ $docencia->dni }}</td>
                                     <td>
                                         <button @click="showModal = true" class="button-tiny button-danger">
                                             <i class="fas fa-trash-alt mr-1"></i> Borrar
                                         </button>
-
 
                                         <!-- Modal -->
                                         <div x-show="showModal" class="modal">
@@ -166,62 +172,36 @@
                                                     Confirmar eliminación
                                                 </h2>
                                                 <p class="modal-text">
-                                                    ¿Estás seguro de que quieres borrar a
-                                                    <b>{{ $coordinador->docente->nombre }} {{ $coordinador->docente->apellido }}</b>
-                                                    del ciclo <b>{{ $coordinador->ciclo->nombre }}</b>?
+                                                    ¿Estás seguro de que quieres eliminar la docencia de
+                                                    <b>{{ $docencia->docente->nombre }} {{ $docencia->docente->apellido }}?</b><br><br>
+                                                    Módulo: <b>{{ $docencia->modulo->nombre }}</b><br>
+                                                    Ciclo: <b>{{ $docencia->ciclo->nombre }}</b>
                                                 </p>
-                                                
-                                                @php
-                                                    $esTutor = \App\Models\Tutor::where('id_centro', $coordinador->id_centro)
-                                                                ->where('id_ciclo', $coordinador->id_ciclo)
-                                                                ->where('dni', $coordinador->dni)
-                                                                ->exists();
-                                                @endphp
-                                                
-                                                @if($esTutor)
-                                                <div class="modal-warning mt-4">
-                                                    <i class="fas fa-info-circle mr-2 text-blue-500"></i>
-                                                    Este coordinador también es tutor de este ciclo.
-                                                </div>
-                                                @endif
                                                 
                                                 <div class="modal-actions">
                                                     <button @click="showModal = false" class="button button-secondary">
                                                         <i class="fas fa-times mr-1"></i> Cancelar
                                                     </button>
                                                     
-                                                    <div class="flex flex-col space-y-2">
-                                                        <form method="POST" action="{{ route('establecer_coordinador.destroy', $coordinador->id) }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="button button-danger">
-                                                                <i class="fas fa-check mr-1"></i> Sí, borrar solo como coordinador
-                                                            </button>
-                                                        </form>
-                                                        
-                                                        @if($esTutor)
-                                                        <form method="POST" action="{{ route('establecer_coordinador.destroy', $coordinador->id) }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <input type="hidden" name="eliminar_tutor" value="1">
-                                                            <button type="submit" class="button button-danger">
-                                                                <i class="fas fa-check-double mr-1"></i> Sí, borrar como coordinador y tutor
-                                                            </button>
-                                                        </form>
-                                                        @endif
-                                                    </div>
+                                                    <form method="POST" action="{{ route('establecer_docencia.destroy', $docencia->id) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="button button-danger">
+                                                            <i class="fas fa-check mr-1"></i> Sí, borrar
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="table-empty">
-                                        <i class="fas fa-info-circle mr-2"></i> No hay coordinadores registrados
-                                    </td>
-                                </tr>
-                            @endforelse
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="table-empty">
+                                            <i class="fas fa-info-circle mr-2"></i> No hay asignaciones de docencia registradas
+                                        </td>
+                                    </tr>
+                                @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -235,5 +215,39 @@
             </div>
         </div>
     </div>
-    
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cicloSelect = document.getElementById('id_ciclo');
+    const moduloSelect = document.getElementById('id_modulo');
+    const modulosData = @json($modulos->map(function($modulo) {
+        return [
+            'id' => $modulo->id_modulo,
+            'nombre' => $modulo->nombre,
+            'ciclos' => $modulo->ciclos->pluck('id_ciclo')->toArray()
+        ];
+    }));
+
+    cicloSelect.addEventListener('change', function() {
+        const cicloId = this.value;
+        
+        // Limpiar select
+        moduloSelect.innerHTML = '<option value="">-- Selecciona un módulo --</option>';
+        
+        if (cicloId) {
+            // Filtrar módulos para este ciclo
+            const modulosFiltrados = modulosData.filter(modulo => 
+                modulo.ciclos.includes(cicloId)
+            );
+            
+            // Agregar opciones
+            modulosFiltrados.forEach(modulo => {
+                const option = document.createElement('option');
+                option.value = modulo.id;
+                option.textContent = modulo.nombre;
+                moduloSelect.appendChild(option);
+            });
+        }
+    });
+});
+</script>
 </x-app-layout>

@@ -16,11 +16,11 @@
                                 <i class="fas fa-exclamation-circle mr-2"></i>
                                 <strong>ERROR:</strong>
                             </p>
-                            <!-- <ul class="alta-error-list">
+                            <ul class="alta-error-list">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
-                            </ul> -->
+                            </ul>
                         </div>
                     </div>
                 @endif
@@ -35,9 +35,6 @@
                         <input type="text" name="dni" id="dni" 
                             class="alta-input @error('dni') alta-input-error @enderror" 
                             required placeholder="Ej: 12345678A">
-                        @error('dni')
-                            <p class="alta-error-message">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div class="alta-form-group">
@@ -47,9 +44,6 @@
                         <input type="email" name="email" id="email" 
                             class="alta-input @error('email') alta-input-error @enderror" 
                             required placeholder="docente@ejemplo.com">
-                        @error('email')
-                            <p class="alta-error-message">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div class="alta-form-group">

@@ -27,7 +27,7 @@
                         <i class="fas fa-chalkboard-teacher icon-alineado"></i>
                         Establecer tutor/es
                     </a>
-                    <a href="{{ route('dashboard') }}" class="panel-button">
+                    <a href="{{ route('establecer_docencia.index') }}" class="panel-button">
                         <i class="fas fa-book icon-alineado"></i>
                         Establecer docencia
                     </a>
