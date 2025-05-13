@@ -5,7 +5,7 @@ Aplicación para la gestión del profesorado en FP virtual en Aragón
 Funcionamineto para poner en marcha la aplicacion:
 Requisitos previos (tener instalado):
 - Composer → https://getcomposer.org/
-- MySQL (yo uso MySQL Workbench)
+- MySQL (yo uso MySQL Workbench -> 10.4.32-MariaDB)
 - Node.js y npm → https://nodejs.org/en (npm se instala automáticamente con Node.js)
 - Entorno local como Laravel Valet, XAMPP, MAMP o Docker (Personalmente recomiendo XAMPP: https://www.apachefriends.org/es/download.html )
 
