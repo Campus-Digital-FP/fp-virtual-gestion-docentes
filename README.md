@@ -8,8 +8,8 @@ Requisitos previos (tener instalado):
 
 - Composer → <https://getcomposer.org/>
 - MySQL (yo uso MySQL Workbench -> 10.4.32-MariaDB)
-- Node.js y npm → https://nodejs.org/en (npm se instala automáticamente con Node.js)
-- Entorno local como Laravel Valet, XAMPP, MAMP o Docker (Personalmente recomiendo XAMPP: <https://www.apachefriends.org/es/download.html> )
+- Node.js y npm → <https://nodejs.org/en> (npm se instala automáticamente con Node.js)
+- Entorno local como Laravel Valet, XAMPP, MAMP o Docker (Personalmente recomiendo XAMPP: <https://www.apachefriends.org/es/download.html> ) → Yo (Marcos) no lo he necesitado
 
 Una vez instalado todo:
 
@@ -24,7 +24,8 @@ En la terminal, ejecutar los siguientes comandos dentro del proyecto:
 
 - `composer install`
 - `npm install`
-- `npm run dev`
+- `npm run dev` → Yo (Marcos) no lo he necesitado
+- `npm run build`
 - `php artisan key:generate`
 - `php artisan migrate:fresh --seed`
 - `php artisan serve`
