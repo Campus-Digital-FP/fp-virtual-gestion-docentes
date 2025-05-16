@@ -6,6 +6,7 @@ use App\Http\Controllers\AltaDocenteController;
 use App\Http\Controllers\EstablecerCoordinadorController;
 use App\Http\Controllers\EstablecerTutorController;
 use App\Http\Controllers\EstablecerDocenciaController;
+use App\Http\Controllers\BajaDocenteController;
 
 Route::redirect('/', '/login');
 
@@ -63,11 +64,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/establecer-docencia/{id}', [EstablecerDocenciaController::class, 'destroy'])
         ->name('establecer_docencia.destroy');
 
-        Route::get('/modulos-por-ciclo/{id}', [EstablecerDocenciaController::class, 'getModulosPorCiclo']);
+    Route::get('/modulos-por-ciclo/{id}', [EstablecerDocenciaController::class, 'getModulosPorCiclo']);
 
+});
 
-
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/docentes/baja', [BajaDocenteController::class, 'index'])->name('docentes.index');
+    Route::delete('/docentes/baja/{dni}', [BajaDocenteController::class, 'destroy'])->name('docentes.destroy');
 });
 
 require __DIR__.'/auth.php';

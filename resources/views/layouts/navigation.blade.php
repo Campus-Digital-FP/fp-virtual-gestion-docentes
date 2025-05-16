@@ -21,19 +21,34 @@
                         {{ __('Alta Docente') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('establecer_coordinador.index')" :active="request()->routeIs('establecer_coordinador.index')">
-                        {{ __('Establecer Coordinador/es') }}
-                    </x-nav-link>
+                <!-- Dropdown Establecer -->
+                <div class="hidden sm:flex sm:items-center sm:-my-px sm:ms-10">
+                    <x-dropdown align="left" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <span>{{ __('Establecer...') }}</span>
+                                <svg class="ms-1 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('establecer_coordinador.index')">
+                                {{ __('Coordinador/es') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('establecer_tutor.index')">
+                                {{ __('Tutor/es') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('establecer_docencia.index')">
+                                {{ __('Docencia') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('establecer_tutor.index')" :active="request()->routeIs('establecer_tutor.index')">
-                        {{ __('Establecer Tutor/es') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('establecer_docencia.index')" :active="request()->routeIs('establecer_docencia.index')">
-                        {{ __('Establecer Docencia') }}
+                    <x-nav-link :href="route('docentes.index')" :active="request()->routeIs('docentes.index')">
+                        {{ __('Baja Docente') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -94,19 +109,31 @@
                 {{ __('Alta Docente') }}
             </x-responsive-nav-link>
         </div>
+        <!-- Responsive Dropdown Establecer -->
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('establecer_coordinador.index')" :active="request()->routeIs('establecer_coordinador.index')">
-                {{ __('Establecer Cordinador/es') }}
-            </x-responsive-nav-link>
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>{{ __('Establecer') }}</span>
+                    <svg :class="{ 'transform rotate-180': open }" class="h-4 w-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div x-show="open" class="space-y-1 pl-4">
+                    <x-responsive-nav-link :href="route('establecer_coordinador.index')">
+                        {{ __('Coordinador/es') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('establecer_tutor.index')">
+                        {{ __('Tutor/es') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('establecer_docencia.index')">
+                        {{ __('Docencia') }}
+                    </x-responsive-nav-link>
+                </div>
+            </div>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('establecer_tutor.index')" :active="request()->routeIs('establecer_tutor.index')">
-                {{ __('Establecer Tutor/es') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('establecer_docencia.index')" :active="request()->routeIs('establecer_docencia.index')">
-                {{ __('Establecer Docencia') }}
+            <x-responsive-nav-link :href="route('docentes.index')" :active="request()->routeIs('docentes.index')">
+                {{ __('Baja Docente') }}
             </x-responsive-nav-link>
         </div>
         <!-- Responsive Settings Options -->
