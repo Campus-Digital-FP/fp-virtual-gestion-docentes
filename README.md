@@ -1,9 +1,10 @@
 # fp-virtual-gestion-docentes
 
 Aplicación para la gestión del profesorado en FP virtual en Aragón
-
-## Funcionamineto para poner en marcha la aplicacion
-
+## Descripción
+Aplicación web desarrollada en Laravel 10 y Vue 3 para la gestión del profesorado en FP virtual en Aragón. Permite gestionar asignaturas, profesores, grupos, aulas y horarios de manera sencilla e intuitiva.
+## Características
+Funcionamineto para poner en marcha la aplicacion:
 Requisitos previos (tener instalado):
 
 - Composer → <https://getcomposer.org/>
