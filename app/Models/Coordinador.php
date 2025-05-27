@@ -28,7 +28,8 @@ class Coordinador extends Model
 
     public function docente()
     {
-        return $this->hasOne(Docente::class, 'dni', 'dni');
+        return $this->belongsTo(Docente::class, 'dni', 'dni');
     }
+
 
 }

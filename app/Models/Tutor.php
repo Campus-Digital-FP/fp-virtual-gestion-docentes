@@ -30,6 +30,7 @@ class Tutor extends Model
     // Relación con Docente
     public function docente()
     {
-        return $this->hasOne(Docente::class, 'dni', 'dni');
+        return $this->belongsTo(Docente::class, 'dni', 'dni');
     }
+
 }

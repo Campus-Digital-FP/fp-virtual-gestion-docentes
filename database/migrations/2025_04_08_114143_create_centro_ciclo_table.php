@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('centro_ciclo', function (Blueprint $table) {
-            $table->string('id_centro', 12);
-            $table->string('id_ciclo', 6);
+            $table->string('id_centro', 50);
+            $table->string('id_ciclo', 50);
         
             $table->foreign('id_centro')->references('id_centro')->on('centros')->onDelete('cascade');
             $table->foreign('id_ciclo')->references('id_ciclo')->on('ciclos')->onDelete('cascade');

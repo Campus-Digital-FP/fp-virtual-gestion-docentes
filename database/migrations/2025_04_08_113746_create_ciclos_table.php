@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ciclos', function (Blueprint $table) {
-            $table->string('id_ciclo', 6)->primary();
+            $table->string('id_ciclo', 50)->primary();
             $table->string('nombre', 256);
             $table->timestamps();
         });

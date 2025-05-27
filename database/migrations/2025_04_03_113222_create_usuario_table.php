@@ -9,11 +9,14 @@ return new class extends Migration {
     {
         Schema::create('usuario', function (Blueprint $table) {
             $table->id();
+            $table->string('id_centro', 50)->nullable();
             $table->string('nombre');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('id_centro')->references('id_centro')->on('centros')->onDelete('set null');
         });
     }
 

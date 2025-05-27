@@ -9,11 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-        public function up()
+    public function up(): void
     {
-        Schema::table('docentes', function (Blueprint $table) {
-            $table->dropColumn('email');
+        Schema::create('centros', function (Blueprint $table) {
+            $table->string('id_centro', 50)->primary();
+            $table->string('nombre', 128);
+            $table->timestamps();
         });
+        
     }
 
     /**
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('docentes', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('centros');
     }
 };

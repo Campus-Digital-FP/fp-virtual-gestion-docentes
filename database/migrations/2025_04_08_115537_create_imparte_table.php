@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('imparte', function (Blueprint $table) {
             $table->string('dni');
             $table->string('id_modulo');
-            $table->string('id_centro', 12);
+            $table->string('id_centro', 50);
         
             $table->foreign('id_modulo')->references('id_modulo')->on('modulos')->onDelete('cascade');
             $table->foreign('id_centro')->references('id_centro')->on('centros')->onDelete('cascade');

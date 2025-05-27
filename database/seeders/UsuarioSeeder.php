@@ -18,14 +18,14 @@ public function run()
 {
     DB::table('usuario')->insert([
         [
-            'id_centro' => 'CEN001',
+            'id_centro' => '22002521',
             'nombre' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' =>  Hash::make('12345678'),
             
         ],
         [
-            'id_centro' => 'CEN002',
+            'id_centro' => '50020125',
             'nombre' => 'Jefe Estudios',
             'email' => 'jefeestudios@gmail.com',
             'password' => Hash::make('12345678'),
