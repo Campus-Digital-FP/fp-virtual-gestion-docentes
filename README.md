@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 # fp-virtual-gestion-docentes
 Aplicación para la gestión del profesorado en FP virtual en Aragón
-=======
-Funcionamineto para poner en marcha la aplicacion:
+
+## Funcionamineto para poner en marcha la aplicacion:
 Requisitos previos (tener instalado):
 - Composer → https://getcomposer.org/
 - MySQL (yo uso MySQL Workbench)
@@ -33,5 +32,3 @@ Esto hará lo siguiente:
   
 PD: Usuario: Admin | Contraseña: 12345678
 Cualquier cosa, mandarme un correo o lo que sea ^^
-
->>>>>>> master
