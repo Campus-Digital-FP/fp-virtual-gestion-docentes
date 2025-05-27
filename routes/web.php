@@ -6,6 +6,8 @@ use App\Http\Controllers\AltaDocenteController;
 use App\Http\Controllers\EstablecerCoordinadorController;
 use App\Http\Controllers\EstablecerTutorController;
 use App\Http\Controllers\EstablecerDocenciaController;
+use App\Http\Controllers\BajaDocenteController;
+use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 
 Route::redirect('/', '/login');
 
@@ -63,11 +65,46 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/establecer-docencia/{id}', [EstablecerDocenciaController::class, 'destroy'])
         ->name('establecer_docencia.destroy');
 
-        Route::get('/modulos-por-ciclo/{id}', [EstablecerDocenciaController::class, 'getModulosPorCiclo']);
-
-
-
+    Route::get('/modulos-por-ciclo/{id}', [EstablecerDocenciaController::class, 'getModulosPorCiclo']);
 
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/docentes/baja', [BajaDocenteController::class, 'index'])->name('docentes.index');
+    Route::delete('/docentes/baja/{dni}', [BajaDocenteController::class, 'destroy'])->name('docentes.destroy');
+});
+
+
+Route::middleware('web')->prefix('admin')->name('admin.')->group(function () {
+    // Ruta /admin que muestra login si no está logueado, o redirige al dashboard si está autenticado
+    Route::get('/', function () {
+        if (auth('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('admin.login');
+    })->name('home');
+
+    // Login admin
+    Route::get('login', [AdminLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AdminLoginController::class, 'login'])->name('login.submit');
+    Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
+
+    // Rutas protegidas para admin
+    Route::middleware('auth:admin')->group(function () {
+        Route::get('dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+
+          Route::get('docentes', function () {
+            return view('admin.ver_docentes');
+        })->name('docentes');
+
+        
+        Route::get('centros', function () {
+            return view('admin.ver_centros');
+        })->name('centros');
+    });
+});
+
 
 require __DIR__.'/auth.php';

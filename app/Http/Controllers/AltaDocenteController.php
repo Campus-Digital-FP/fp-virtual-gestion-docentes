@@ -64,11 +64,38 @@ class AltaDocenteController extends Controller
         DB::beginTransaction();
 
         try {
-            // Crear el docente si no existe
-            $docente = Docente::firstOrCreate(
-                ['dni' => $dni],
-                ['nombre' => $request->nombre, 'apellido' => $request->apellido]
-            );
+            // Buscar el docente existente por DNI
+            $docente = Docente::where('dni', $dni)->first();
+
+            if ($docente) {
+                // Si el nombre o apellido han cambiado, actualizarlos
+                $nombreNuevo = $request->nombre;
+                $apellidoNuevo = $request->apellido;
+
+                $actualizado = false;
+
+                if ($docente->nombre !== $nombreNuevo) {
+                    $docente->nombre = $nombreNuevo;
+                    $actualizado = true;
+                }
+
+                if ($docente->apellido !== $apellidoNuevo) {
+                    $docente->apellido = $apellidoNuevo;
+                    $actualizado = true;
+                }
+
+                if ($actualizado) {
+                    $docente->save();
+                }
+
+            } else {
+                // Si no existe, se crea
+                $docente = Docente::create([
+                    'dni' => $dni,
+                    'nombre' => $request->nombre,
+                    'apellido' => $request->apellido,
+                ]);
+            }
 
             // Asignar el docente al centro
             CentroDocente::create([
@@ -85,12 +112,13 @@ class AltaDocenteController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Hubo un error al guardar el docente.'])->withInput();
         }
+
     }
 
     //Comprueba si el dni existe para autocompletar los campos 'Nombre' y 'Apellido'
     public function comprobarDocente($dni)
     {
-        $docente = \App\Models\Docente::where('dni', $dni)->first();
+        $docente = Docente::where('dni', $dni)->first();
 
         if ($docente) {
             return response()->json([

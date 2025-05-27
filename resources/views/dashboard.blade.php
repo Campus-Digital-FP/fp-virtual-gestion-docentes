@@ -11,7 +11,7 @@
             <div class="panel-container">
                 <div class="panel-header">
                     <h3 class="alta-title">Panel de Gestión Docente</h3>
-                    <p class="alta-subtitle">Aquí podrás gestionar tu actividad.</p>
+                    <p class="alta-subtitle">Bienvenido {{ Auth::user()->nombre }} aquí podrás gestionar tu actividad.</p>
                 </div>
 
                 <div class="panel-buttons">
@@ -30,6 +30,10 @@
                     <a href="{{ route('establecer_docencia.index') }}" class="panel-button">
                         <i class="fas fa-book icon-alineado"></i>
                         Establecer docencia
+                    </a>
+                    <a href="{{ route('docentes.index') }}" class="panel-button">
+                       <i class="fa-solid fa-trash icon-alineado"></i>
+                       Baja Docente
                     </a>
                 </div>
             </div>

@@ -216,38 +216,38 @@
         </div>
     </div>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const cicloSelect = document.getElementById('id_ciclo');
-    const moduloSelect = document.getElementById('id_modulo');
-    const modulosData = @json($modulos->map(function($modulo) {
-        return [
-            'id' => $modulo->id_modulo,
-            'nombre' => $modulo->nombre,
-            'ciclos' => $modulo->ciclos->pluck('id_ciclo')->toArray()
-        ];
-    }));
+        document.addEventListener('DOMContentLoaded', function() {
+            const cicloSelect = document.getElementById('id_ciclo');
+            const moduloSelect = document.getElementById('id_modulo');
+            const modulosData = @json($modulos->map(function($modulo) {
+                return [
+                    'id' => $modulo->id_modulo,
+                    'nombre' => $modulo->nombre,
+                    'ciclos' => $modulo->ciclos->pluck('id_ciclo')->toArray()
+                ];
+            }));
 
-    cicloSelect.addEventListener('change', function() {
-        const cicloId = this.value;
-        
-        // Limpiar select
-        moduloSelect.innerHTML = '<option value="">-- Selecciona un módulo --</option>';
-        
-        if (cicloId) {
-            // Filtrar módulos para este ciclo
-            const modulosFiltrados = modulosData.filter(modulo => 
-                modulo.ciclos.includes(cicloId)
-            );
-            
-            // Agregar opciones
-            modulosFiltrados.forEach(modulo => {
-                const option = document.createElement('option');
-                option.value = modulo.id;
-                option.textContent = modulo.nombre;
-                moduloSelect.appendChild(option);
+            cicloSelect.addEventListener('change', function() {
+                const cicloId = this.value;
+                
+                // Limpiar select
+                moduloSelect.innerHTML = '<option value="">-- Selecciona un módulo --</option>';
+                
+                if (cicloId) {
+                    // Filtrar módulos para este ciclo
+                    const modulosFiltrados = modulosData.filter(modulo => 
+                        modulo.ciclos.includes(cicloId)
+                    );
+                    
+                    // Agregar opciones
+                    modulosFiltrados.forEach(modulo => {
+                        const option = document.createElement('option');
+                        option.value = modulo.id;
+                        option.textContent = modulo.nombre;
+                        moduloSelect.appendChild(option);
+                    });
+                }
             });
-        }
-    });
-});
-</script>
+        });
+    </script>
 </x-app-layout>

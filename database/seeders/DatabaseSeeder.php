@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         CoordinadorSeeder::class,
         TutorSeeder::class,
         ImparteSeeder::class,
+        AdminSeeder::class,
     ]);
 }
 

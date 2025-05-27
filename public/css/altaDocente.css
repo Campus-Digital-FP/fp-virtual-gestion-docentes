@@ -69,6 +69,24 @@
     font-size: 0.875rem;
     color: #e53e3e;
 }
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper input {
+    flex: 1;
+    padding-right: 2.5rem; 
+}
+
+.toggle-icon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    color: #666;
+}
+
 
 /* Botones */
 .alta-form-actions {
