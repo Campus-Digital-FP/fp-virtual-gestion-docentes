@@ -38,5 +38,27 @@ class Docente extends Model
         return $this->hasMany(Docencia::class, 'dni', 'dni');
     }
 
+    public function modulosImpartidos()
+    {
+        return $this->hasMany(DocenteCicloModulo::class, 'dni', 'dni');
+    }
+
+    // Relación con tutores
+    public function tutorados()
+    {
+        return $this->hasMany(Tutor::class, 'dni', 'dni');
+    }
+
+    // Relación con coordinadores
+    public function coordinaciones()
+    {
+        return $this->hasMany(Coordinador::class, 'dni', 'dni');
+    }
+
+    public function centroDocente()
+    {
+        return $this->belongsTo(CentroDocente::class, 'dni', 'dni');
+    }
+
 }
 
