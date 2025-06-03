@@ -21,5 +21,11 @@ class Docencia extends Model
     public function ciclo() {
         return $this->belongsTo(Ciclo::class, 'id_ciclo');
     }
+
+    public function centroDocente()
+    {
+        return $this->hasOne(CentroDocente::class, 'dni', 'dni');
+    }
+
 }
 
