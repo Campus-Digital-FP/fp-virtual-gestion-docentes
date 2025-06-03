@@ -1,5 +1,6 @@
-# Use the official Python image as the base image
-FROM python:3.9.16-slim-bullseye
+# PHP 8.1 con FPM como imagen base
+FROM php:8.1-fpm
+LABEL MAINTAINER pablo <pabloruizsoria@gmail.com>
 
 # Set the working directory in the container
 WORKDIR /app
@@ -14,7 +15,7 @@ WORKDIR /app
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 8000
+EXPOSE 80
 
 # Command to run the application
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
