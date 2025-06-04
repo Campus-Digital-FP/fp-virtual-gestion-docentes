@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y git curl libpng-dev libonig-dev libxml2
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Instalar Node.js y npm
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \\
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Establecer directorio de trabajo
@@ -24,8 +24,8 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
 # Configurar permisos
-RUN chown -R www-data:www-data /var/www/html \\
-    && chmod -R 755 /var/www/html/storage \\
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Configuración de Nginx
