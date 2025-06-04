@@ -36,6 +36,11 @@ COPY . .
 # DEBUG Contenido
 RUN ls -l /var/www/html
 
+# Configurar permisos
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
+
 # Instalar dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader -vvv
 
