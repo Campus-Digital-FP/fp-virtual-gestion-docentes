@@ -188,8 +188,10 @@
                             this.isLoading = false;
                         });
                     }
-                }" x-show="showModal" x-cloak @click.away="showModal = false"
-                    @open-modal.window="loadCentroInfo($event.detail.centroId, $event.detail.cicloId)" x-transition.opacity
+                }"  x-show="showModal" 
+                    x-cloak @click.away="showModal = false"
+                    @open-modal.window="loadCentroInfo($event.detail.centroId, $event.detail.cicloId)" 
+                    x-transition.opacity
                     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true"
                     x-bind:aria-hidden="!showModal">
                     
@@ -287,7 +289,7 @@
                                                 </div>
                                             </template>
                                             <template x-if="!centroInfo.tutor">
-                                                <p class="text-gray-500 italic">No hay tutor asignado</p>
+                                                <p class="text-gray-500 italic">No hay tutor asignado a este ciclo</p>
                                             </template>
                                         </div>
                                         
@@ -311,7 +313,7 @@
                                                 </div>
                                             </template>
                                             <template x-if="!centroInfo.coordinador">
-                                                <p class="text-gray-500 italic">No hay coordinador asignado</p>
+                                                <p class="text-gray-500 italic">No hay coordinador asignado a este ciclo</p>
                                             </template>
                                         </div>
                                     </div>

@@ -81,12 +81,12 @@ class EstablecerDocenciaController extends Controller
         $existe = Docencia::where('id_centro', $idCentro)
             ->where('id_ciclo', $request->id_ciclo)
             ->where('id_modulo', $request->id_modulo)
-            ->where('dni', $request->dni)
             ->exists();
 
         if ($existe) {
-            return redirect()->back()->withErrors(['dni' => 'Este docente ya está asignado a este módulo.']);
+            return redirect()->back()->withErrors(['id_modulo' => 'Este módulo ya tiene un docente asignado.']);
         }
+
 
         // Crear la docencia
         $this->model::create([

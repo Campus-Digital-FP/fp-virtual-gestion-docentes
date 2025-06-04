@@ -56,13 +56,12 @@ class EstablecerTutorController extends Controller
 
         $idCentro = Auth::user()->id_centro;
 
-        $existe = Tutor::where('id_centro', $idCentro)
+        $yaExisteTutor = Tutor::where('id_centro', $idCentro)
             ->where('id_ciclo', $request->id_ciclo)
-            ->where('dni', $request->dni)
             ->exists();
 
-        if ($existe) {
-            return redirect()->back()->withErrors(['dni' => 'Este tutor ya está asignado a ese ciclo.']);
+        if ($yaExisteTutor) {
+            return redirect()->back()->withErrors(['id_ciclo' => 'Ya existe un tutor asignado a este ciclo.']);
         }
 
         Tutor::create([

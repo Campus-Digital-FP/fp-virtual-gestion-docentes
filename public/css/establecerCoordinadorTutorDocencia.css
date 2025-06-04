@@ -268,6 +268,7 @@
 } 
 
 /* Tabla */
+
 .table-container {
     overflow-x: auto;
     background-color: white;
@@ -300,6 +301,17 @@
 .table tr:hover {
     background-color: #f8fafc;
 }
+
+.table th a {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.table th {
+    vertical-align: middle;
+}
+
 
 .table-empty {
     text-align: center;

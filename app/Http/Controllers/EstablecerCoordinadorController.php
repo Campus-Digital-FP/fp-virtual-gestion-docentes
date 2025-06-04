@@ -58,38 +58,38 @@ class EstablecerCoordinadorController extends Controller
 
         $idCentro = Auth::user()->id_centro;
 
-        $existe = Coordinador::where('id_centro', $idCentro)
+        // Validar si ya existe un coordinador para ese ciclo en ese centro
+        $yaExisteCoordinador = Coordinador::where('id_centro', $idCentro)
             ->where('id_ciclo', $request->id_ciclo)
-            ->where('dni', $request->dni)
             ->exists();
 
-        if ($existe) {
-            return redirect()->back()->withErrors(['dni' => 'Este coordinador ya está asignado a ese ciclo.']);
+        if ($yaExisteCoordinador) {
+            return redirect()->back()->withErrors(['id_ciclo' => 'Ya existe un coordinador asignado a este ciclo.']);
         }
 
-        // Si también es tutor, se guarda en la tabla de tutores
+        // Si también es tutor, comprobar que no exista
         if ($request->es_tutor == 1) {
-            $tutor = Tutor::firstOrCreate([
+            
+            $yaExisteTutor = Tutor::where('id_centro', $idCentro)
+                ->where('id_ciclo', $request->id_ciclo)
+                ->exists();
+
+            if ($yaExisteTutor) {
+                return redirect()->back()->withErrors(['id_ciclo' => 'Ya existe un tutor asignado a este ciclo.']);
+            }
+
+            // Si no existe, lo creamos
+            Tutor::create([
                 'id_centro' => $idCentro,
                 'id_ciclo' => $request->id_ciclo,
                 'dni' => $request->dni,
             ]);
-
-            // Si NO fue recién creado, significa que ya existía
-            if (!$tutor->wasRecentlyCreated) {
-                return redirect()->back()->withErrors(['ciclo' => 'Este docente ya es tutor de ese ciclo.']);
-            }
         }
 
-        //Se crea el coordinador
-        Coordinador::create([
-            'id_centro' => $idCentro,
-            'id_ciclo' => $request->id_ciclo,            
-            'dni' => $request->dni,
-        ]);
 
         return redirect()->route('establecer_coordinador.index')->with('success', 'Coordinador añadido correctamente.');
     }
+
 
 
     public function destroy($id, Request $request)
