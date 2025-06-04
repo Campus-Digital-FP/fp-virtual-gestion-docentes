@@ -9,6 +9,7 @@ use App\Http\Controllers\EstablecerDocenciaController;
 use App\Http\Controllers\BajaDocenteController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\DocenteController;
+use App\Http\Controllers\Admin\CentroController;
 
 Route::redirect('/', '/login');
 
@@ -99,10 +100,9 @@ Route::middleware('web')->prefix('admin')->name('admin.')->group(function () {
         Route::get('docentes', [DocenteController::class, 'index'])->name('docentes');
         Route::get('docentes/{dni}/info', [DocenteController::class, 'info'])->name('docentes.info');
 
-        
-        Route::get('centros', function () {
-            return view('admin.ver_centros');
-        })->name('centros');
+         Route::get('centros', [CentroController::class, 'index'])->name('centros');
+        Route::get('centros/{id_centro}/info', [CentroController::class, 'info'])->name('centros.info');
+       
     });
 });
 

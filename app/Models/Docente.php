@@ -15,11 +15,12 @@ class Docente extends Model
     protected $fillable = ['dni', 'nombre', 'apellido'];
 
 
-    public function centros()
-    {
-        return $this->belongsToMany(Centro::class, 'centro_docente', 'dni', 'id_centro')
-                    ->withPivot('email');
-    }
+public function centros()
+{
+    return $this->belongsToMany(Centro::class, 'centro_docente', 'dni', 'id_centro')
+                ->withPivot('email');
+}
+
 
     // En Docente.php
 
@@ -55,10 +56,18 @@ class Docente extends Model
         return $this->hasMany(Coordinador::class, 'dni', 'dni');
     }
 
-    public function centroDocente()
+    public function emailEnCentro($idCentro)
     {
-        return $this->belongsTo(CentroDocente::class, 'dni', 'dni');
+        return CentroDocente::where('dni', $this->dni)
+            ->where('id_centro', $idCentro)
+            ->value('email'); 
     }
+
+
+    // public function centroDocente()
+    // {
+    //     return $this->belongsTo(CentroDocente::class, 'dni', 'dni');
+    // }
 
 }
 

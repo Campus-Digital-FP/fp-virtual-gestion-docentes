@@ -33,4 +33,9 @@ class Tutor extends Model
         return $this->belongsTo(Docente::class, 'dni', 'dni');
     }
 
+    public function centroDocente()
+    {
+        return $this->hasOne(CentroDocente::class, 'dni', 'dni');
+    }
+
 }

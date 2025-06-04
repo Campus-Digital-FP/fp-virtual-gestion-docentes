@@ -133,16 +133,16 @@
                                     <td class="uppercase">{{ $docente->dni }}</td>
                                     <td class="text-center">
                                         @if($docente->es_tutor)
-                                            <span class="text-green-500">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-check-circle"></i></span>
+                                            <span class="text-green-500"><i class="fas fa-check-circle"></i></span>
                                         @else
-                                            <span class="text-red-500">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-times-circle"></i></span>
+                                            <span class="text-red-500"><i class="fas fa-times-circle"></i></span>
                                         @endif
                                     </td>
                                     <td class="text-center">
                                         @if($docente->es_coordinador)
-                                            <span class="text-green-500">&nbsp;&nbsp;<i class="fas fa-check-circle"></i></span>
+                                            <span class="text-green-500"><i class="fas fa-check-circle"></i></span>
                                         @else
-                                            <span class="text-red-500">&nbsp;&nbsp;<i class="fas fa-times-circle"></i></span>
+                                            <span class="text-red-500"><i class="fas fa-times-circle"></i></span>
                                         @endif
                                     </td>
                                     <td>
@@ -209,11 +209,11 @@
             <!-- Contenedor principal -->
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden relative">
                 <!-- Header -->
-                <div class="flex justify-between items-center bg-gray-200 px-6 py-4">
-                    <h2 class="text-xl font-bold text-black">
+                <div class="flex justify-between items-center bg-indigo-600 px-6 py-4">
+                    <h2 class="text-xl font-bold text-white">
                         <i class="fas fa-user-tie mr-2"></i> Información del docente
                     </h2>
-                    <button @click="showModal = false" class="text-black hover:text-gray-500 transition-colors"
+                    <button @click="showModal = false" class="text-white hover:text-gray-300 transition-colors"
                         aria-label="Cerrar modal">
                         <i class="fas fa-times text-lg"></i>
                     </button>
@@ -369,7 +369,7 @@
                                 <section class="bg-white rounded-lg border border-gray-200 overflow-hidden mt-6">
                                     <div class="bg-gray-50 px-4 py-3 border-b">
                                         <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                                            <i class="fas fa-chalkboard-teacher mr-2 text-indigo-600"></i>
+                                            <i class="fas fa-user-tie mr-2 text-indigo-600"></i>
                                             Coordinador en:                                          
                                         </h3>
                                     </div>
@@ -400,8 +400,8 @@
                 <!-- Footer -->
                 <div class="flex justify-end bg-gray-100 px-6 py-4 border-t">
                     <button @click="showModal = false"
-                        class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition-colors flex items-center">
-                         Cerrar
+                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-colors flex items-center">
+                        <i class="fas fa-times mr-2"></i> Cerrar
                     </button>
                 </div>
             </div>

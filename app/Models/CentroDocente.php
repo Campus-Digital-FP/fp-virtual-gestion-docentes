@@ -21,6 +21,11 @@ class CentroDocente extends Model
         return $this->belongsTo(Docente::class, 'dni', 'dni');
     }
 
+    public function docencia()
+    {
+        return $this->hasMany(DocenteCicloModulo::class, 'dni', 'dni');
+    }
+
     // Relación con el Centro
     public function centro()
     {
