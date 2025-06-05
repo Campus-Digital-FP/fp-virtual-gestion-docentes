@@ -41,8 +41,9 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-    
-RUN  composer dump-autoload
+# 
+RUN rm -f /var/www/html/composer.lock # Eliminar composer.lock
+RUN composer update --no-dev --optimize-autoloader # Actualizar dependencias
 
 # Instalar dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader -vvv
