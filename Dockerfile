@@ -1,5 +1,5 @@
 # Usar PHP 8.1 con FPM
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
         bcmath \
         gd
 
-# Instalar Composer
+# Instalar Composer composer install
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Instalar Node.js y npm
@@ -42,8 +42,10 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
 # 
-RUN rm -f /var/www/html/composer.lock # Eliminar composer.lock
-RUN composer update --no-dev --optimize-autoloader # Actualizar dependencias
+# RUN rm -f /var/www/html/composer.lock # Eliminar composer.lock
+# RUN composer update --no-dev --optimize-autoloader 
+
+# Actualizar dependencias
 
 # Instalar dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader -vvv
