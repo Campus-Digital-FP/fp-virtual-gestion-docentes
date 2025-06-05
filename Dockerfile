@@ -3,22 +3,22 @@ FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-        git \
-        curl \
-        libpng-dev \
-        libonig-dev \
-        libxml2-dev \
-        zip \
-        unzip \
-        nginx \
-        supervisor \
-     && docker-php-ext-install \
-        pdo_mysql \
-        mbstring \
-        exif \
-        pcntl \
-        bcmath \
-        gd
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    nginx \
+    supervisor \
+    && docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd
 
 # Instalar Composer composer install
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -33,19 +33,10 @@ WORKDIR /var/www/html
 # Copiar archivos del proyecto
 COPY . .
 
-# DEBUG Contenido
-RUN ls -l /var/www/html
-
 # Configurar permisos
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
-
-# 
-# RUN rm -f /var/www/html/composer.lock # Eliminar composer.lock
-# RUN composer update --no-dev --optimize-autoloader 
-
-# Actualizar dependencias
+# RUN chown -R www-data:www-data /var/www/html \
+#     && chmod -R 755 /var/www/html/storage \
+#     && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Instalar dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader -vvv
