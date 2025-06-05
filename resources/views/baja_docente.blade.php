@@ -78,7 +78,7 @@
                                     <td class="uppercase">{{ $docente->dni }}</td>
                                     <td>
                                         <button @click="showModal = true" class="button-tiny button-danger">
-                                            <i class="fa-solid fa-delete-left"></i>
+                                            <i class="fas fa-trash-alt mr-1"></i>
                                         </button>
 
                                         <!-- Modal -->

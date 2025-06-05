@@ -15,6 +15,7 @@ class DocenteController extends Controller
     // Mostrar listado de docentes con filtro y ordenación
     public function index(Request $request)
     {
+        //Ordenacion de nombre por defecto
         $sortField = $request->input('sort', 'nombre');
         $allowedSorts = ['nombre', 'apellido', 'dni']; 
 
@@ -102,7 +103,6 @@ class DocenteController extends Controller
                 }
             }
 
-            /// Modificar solo la parte de procesamiento de tutorías y coordinaciones
             $tutorias = [];
             $coordinaciones = [];
 

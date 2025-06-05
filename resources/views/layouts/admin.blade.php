@@ -43,16 +43,23 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('admin.dashboard')">
+                       <!-- <x-dropdown-link :href="route('admin.dashboard')">
                             {{ __('Perfil') }}
-                        </x-dropdown-link>
+                        </x-dropdown-link> -->
+                         <form method="POST" action="{{ route('admin.logout') }}">
 
-                        <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
-                            <x-dropdown-link :href="route('admin.logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                {{ __('Cerrar sesión') }}
+                            <x-dropdown-link :href="route('admin.logout')" onclick="event.preventDefault(); this.closest('form').submit();" 
+                                class="px-4 py-3 hover:bg-blue-50 text-gray-700 transition-all duration-300 flex items-center space-x-2 group">
+                                <span class="p-1.5 bg-red-100 rounded-lg text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
+                                </span>
+                                <span class="group-hover:text-red-600 transition-colors duration-300">{{ __('Cerrar sesión') }}</span>
                             </x-dropdown-link>
                         </form>
+                        
                     </x-slot>
                 </x-dropdown>
             </div>
