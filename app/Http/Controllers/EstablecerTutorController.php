@@ -70,12 +70,26 @@ class EstablecerTutorController extends Controller
             'dni' => $request->dni,
         ]);
 
+        // Comando moosh para matricular a docente en tutor
+        /*$cohortName = "tutores_ciclo_{$request->id_ciclo}";
+        $comandoCohort = "moosh cohort-enrol -c " . escapeshellarg($request->dni) .
+                        " " . escapeshellarg($cohortName);
+                        
+        $this->ejecutarMoosh($comandoCohort);*/
+
         return redirect()->route('establecer_tutor.index')->with('success', 'Tutor añadido correctamente.');
     }
 
     public function destroy($id, Request $request)
     {
         $tutor = Tutor::findOrFail($id);
+
+        // Comando moosh para desmatricular de cohort tutor
+        /*$cohortName = "tutores_ciclo_{$request->id_ciclo}";
+        $commandTutor = "moosh cohort-unenrol -u " . escapeshellarg($tutor->dni) . 
+            " " . escapeshellarg($cohortName);
+
+        $this->ejecutarMoosh($commandTutor);*/
         
         // Verificar si también es coordinador en el mismo ciclo
         $esCoordinador = Coordinador::where('id_centro', $tutor->id_centro)
@@ -89,11 +103,28 @@ class EstablecerTutorController extends Controller
                 ->where('id_ciclo', $tutor->id_ciclo)
                 ->where('dni', $tutor->dni)
                 ->delete();
+            
+            // Comando moosh para desmatricular de cohort coordinador
+            /*$cohortName = "coordinadores_ciclo_{$request->id_ciclo}";
+            $commandCoordinador = "moosh cohort-unenrol -u " . escapeshellarg($tutor->dni) . 
+                " " . escapeshellarg($cohortName);
+
+            $this->ejecutarMoosh($commandCoordinador);*/
         }
         
         $tutor->delete();
 
         return redirect()->back()->with('success', 'Tutor eliminado correctamente' . 
             ($request->has('eliminar_coordinador') && $esCoordinador ? ' y también se ha eliminado como coordinador' : ''));
+    }
+
+    //Ejecuta & Control de errores para comandos moosh
+    protected function ejecutarMoosh($command)
+    {
+        exec($command, $output, $status);
+        if ($status !== 0) {
+            Log::error("Fallo Moosh: " . implode("\n", $output));
+            throw new \Exception("Fallo al ejecutar comando Moosh.");
+        }
     }
 }

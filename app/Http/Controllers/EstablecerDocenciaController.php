@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Docencia;
+use App\Models\Docente;
 use App\Models\Ciclo;
 use App\Models\Modulo;
 use App\Models\DocenteCicloModulo;
@@ -41,7 +42,7 @@ class EstablecerDocenciaController extends Controller
         
         
         // Docentes del centro (se mantiene igual)
-        $docentes = \App\Models\Docente::whereIn('dni', function ($query) use ($centro) {
+        $docentes = Docente::whereIn('dni', function ($query) use ($centro) {
             $query->select('dni')
                 ->from('centro_docente')
                 ->where('id_centro', $centro->id_centro);
@@ -96,6 +97,12 @@ class EstablecerDocenciaController extends Controller
             'dni' => $request->dni,
         ]);
 
+        // Comando moosh para matricular al docente en el curso correspondiente al módulo
+        /*$courseName = "modulo_{$request->id_modulo}"; 
+        $command = "moosh course-enrol -u " . escapeshellarg($request->dni) . " " . escapeshellarg($courseName);
+
+        $this->ejecutarMoosh($command);*/
+        
         return redirect()->route('establecer_docencia.index')->with('success', 'Docencia asignada correctamente.');
     }
 
@@ -103,6 +110,12 @@ class EstablecerDocenciaController extends Controller
     {
         $docencia = Docencia::findOrFail($id);
         $docencia->delete();
+
+        // Comando moosh para desmatricular al docente en el curso correspondiente al módulo
+        /*$courseName = "modulo_{$docencia->id_modulo}"; 
+        $command = "moosh course-unenrol -u " . escapeshellarg($docencia->dni) . " " . escapeshellarg($courseName);
+
+        $this->ejecutarMoosh($command);*/
 
         return redirect()->back()->with('success', 'Docencia eliminada correctamente.');
     }
@@ -116,6 +129,16 @@ class EstablecerDocenciaController extends Controller
             ->get();
     
         return response()->json($modulos);
+    }
+
+    //Ejecuta & Control de errores para comandos moosh
+    protected function ejecutarMoosh($command)
+    {
+        exec($command, $output, $status);
+        if ($status !== 0) {
+            Log::error("Fallo Moosh: " . implode("\n", $output));
+            throw new \Exception("Fallo al ejecutar comando Moosh.");
+        }
     }
 
 

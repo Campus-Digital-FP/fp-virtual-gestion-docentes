@@ -86,6 +86,14 @@ class AltaDocenteController extends Controller
 
                 if ($actualizado) {
                     $docente->save();
+
+                    // Comando moosh para actualizar el docente en Moodle ( Uso de escapehellarg para que los comandos sean seguros y no puedan poner algo malicioso los usuarios )
+                    /*$command = "moosh user-update" .
+                        " --firstname " . escapeshellarg($request->nombre) . 
+                        " --lastname " . escapeshellarg($request->apellido) . 
+                        " " . escapeshellarg($dni);
+
+                    $this->ejecutarMoosh($command);*/
                 }
 
             } else {
@@ -95,6 +103,16 @@ class AltaDocenteController extends Controller
                     'nombre' => $request->nombre,
                     'apellido' => $request->apellido,
                 ]);
+
+                // Comando moosh para crear nuevo usuario en Moodle ( Uso de escapehellarg para que los comandos sean seguros y no puedan poner algo malicioso los usuarios )
+                /*$command = "moosh user-create" .
+                    " --email " . escapeshellarg($request->email) .
+                    " --password " . escapeshellarg($dni) . // DNI de contraseña
+                    " --firstname " . escapeshellarg($request->nombre) .
+                    " --lastname " . escapeshellarg($request->apellido) .
+                    " " . escapeshellarg($dni); 
+
+                $this->ejecutarMoosh($command); */
             }
 
             // Asignar el docente al centro
@@ -130,4 +148,15 @@ class AltaDocenteController extends Controller
 
         return response()->json(['existe' => false]);
     }
+
+    //Ejecuta & Control de errores para comandos moosh
+    protected function ejecutarMoosh($command)
+    {
+        exec($command, $output, $status);
+        if ($status !== 0) {
+            Log::error("Fallo Moosh: " . implode("\n", $output));
+            throw new \Exception("Fallo al ejecutar comando Moosh.");
+        }
+    }
+
 }
