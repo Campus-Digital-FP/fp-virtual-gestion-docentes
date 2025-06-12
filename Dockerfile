@@ -12,7 +12,6 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nginx \
     supervisor \
-    php8.2-fpm \
     && docker-php-ext-install \
     pdo_mysql \
     mbstring \
