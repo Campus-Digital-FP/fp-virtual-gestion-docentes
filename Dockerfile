@@ -55,7 +55,7 @@ COPY <<EOF /etc/nginx/sites-available/default
 server {
     listen 80;
     server_name _;
-    root /var/www/html/public;
+    root /var/www/html;
     index index.php index.html index.htm;
 
     location / {
