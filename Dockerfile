@@ -31,7 +31,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 WORKDIR /var/www/html
 
 # Copiar archivos del proyecto
-COPY . .
+# COPY . .
+COPY . /var/www/html
 
 # Configurar permisos
 # RUN chown -R www-data:www-data /var/www/html \
