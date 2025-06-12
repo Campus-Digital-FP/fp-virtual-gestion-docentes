@@ -51,30 +51,30 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Configuración de Nginx
-COPY <<EOF /etc/nginx/sites-available/default
-server {
-    listen 80;
-    server_name _;
-    root /var/www/html/public;
-    index index.php index.html index.htm;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        # fastcgi_pass 127.0.0.1:9000;
-        fastcgi_pass _php;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
-
-    location ~ /\.ht {
-        deny all;
-    }
-}
-EOF
+# COPY <<EOF /etc/nginx/sites-available/default
+# server {
+#     listen 80;
+#     server_name _;
+#     root /var/www/html/public;
+#     index index.php index.html index.htm;
+# 
+#     location / {
+#         try_files $uri $uri/ /index.php?$query_string;
+#     }
+# 
+#     location ~ \.php$ {
+#         # fastcgi_pass 127.0.0.1:9000;
+#         fastcgi_pass _php;
+#         fastcgi_index index.php;
+#         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+#         include fastcgi_params;
+#     }
+# 
+#     location ~ /\.ht {
+#         deny all;
+#     }
+# }
+# EOF
 
 # Configuración de Supervisor
 COPY <<EOF /etc/supervisor/conf.d/supervisord.conf
