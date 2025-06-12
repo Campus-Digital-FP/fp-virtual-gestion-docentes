@@ -1,4 +1,4 @@
-# Usar PHP 8.1 con FPM
+# Usar PHP 8.2 con FPM
 FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
@@ -83,7 +83,7 @@ logfile=/var/log/supervisor/supervisord.log
 pidfile=/var/run/supervisord.pid
 
 [program:php-fpm]
-command=php-fpm8.2 -F
+command=php-fpm -F
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
