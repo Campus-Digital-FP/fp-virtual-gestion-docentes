@@ -99,6 +99,8 @@ Route::middleware('web')->prefix('admin')->name('admin.')->group(function () {
 
         Route::get('docentes', [DocenteController::class, 'index'])->name('docentes');
         Route::get('docentes/{dni}/info', [DocenteController::class, 'info'])->name('docentes.info');
+         Route::get('docentes/exportar-csv', [DocenteController::class, 'exportDocentesCSV'])
+        ->name('docentes.export.csv');
 
          Route::get('centros', [CentroController::class, 'index'])->name('centros');
         Route::get('centros/{id_centro}/info', [CentroController::class, 'info'])->name('centros.info');
