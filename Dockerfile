@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    nginx \
     supervisor \
     && docker-php-ext-install \
     pdo_mysql \
@@ -49,32 +48,6 @@ RUN npm install && npm run build
 RUN chown -R www-data:www-data /usr/share/nginx/html \
     && chmod -R 755 /usr/share/nginx/html/storage \
     && chmod -R 755 /usr/share/nginx/html/bootstrap/cache
-
-# Configuración de Nginx
-# COPY <<EOF /etc/nginx/sites-available/default
-# server {
-#     listen 80;
-#     server_name _;
-#     root /usr/share/nginx/html/public;
-#     index index.php index.html index.htm;
-# 
-#     location / {
-#         try_files $uri $uri/ /index.php?$query_string;
-#     }
-# 
-#     location ~ \.php$ {
-#         # fastcgi_pass 127.0.0.1:9000;
-#         fastcgi_pass _php;
-#         fastcgi_index index.php;
-#         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-#         include fastcgi_params;
-#     }
-# 
-#     location ~ /\.ht {
-#         deny all;
-#     }
-# }
-# EOF
 
 # Configuración de Supervisor
 COPY <<EOF /etc/supervisor/conf.d/supervisord.conf
