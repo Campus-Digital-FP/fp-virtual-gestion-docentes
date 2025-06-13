@@ -116,7 +116,7 @@ fi
 php artisan key:generate --force
 
 # Ejecutar migraciones si la base de datos está disponible
-php artisan migrate --force --seed
+php artisan migrate --seed
 
 # Optimizar configuración para producción
 php artisan config:cache
