@@ -113,7 +113,7 @@ if [ ! -f .env ]; then
 fi
 
 # Generar clave de aplicación
-php artisan key:generate --force
+php artisan key:generate
 
 # Ejecutar migraciones si la base de datos está disponible
 php artisan migrate --seed
