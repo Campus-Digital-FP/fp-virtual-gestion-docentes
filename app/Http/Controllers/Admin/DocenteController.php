@@ -174,4 +174,62 @@ class DocenteController extends Controller
             ], 500);
         }
     }
+
+    // Funcion para crear un CSV con todos los docnetes
+    public function exportDocentesCSV()
+    {
+        // Obtenemos los datos desde centro_docente con la relación al docente
+        $docentesData = CentroDocente::with(['docente', 'centro'])
+            ->select('centro_docente.*')
+            ->join('docentes', 'centro_docente.dni', '=', 'docentes.dni')
+            ->get()
+            ->groupBy('dni'); // Agrupamos por DNI para evitar duplicados
+
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=docentes_".now()->format('Y-m-d').".csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $callback = function() use ($docentesData) {
+            $file = fopen('php://output', 'w');
+            fwrite($file, "\xEF\xBB\xBF"); // BOM para Excel
+            fputcsv($file, [
+                'Nombre', 
+                'Apellido', 
+                'DNI', 
+                'Emails', 
+                'Es Tutor', 
+                'Es Coordinador'
+            ], ';');
+            
+            foreach ($docentesData as $dni => $registros) {
+                $docente = $registros->first()->docente;
+                
+                // Obtenemos todos los emails únicos para este DNI
+                $emails = $registros->pluck('email')
+                    ->filter()
+                    ->unique()
+                    ->implode(', ');
+                
+                // Verificamos si es tutor o coordinador
+                $esTutor = Tutor::where('dni', $dni)->exists() ? 'Sí' : 'No';
+                $esCoordinador = Coordinador::where('dni', $dni)->exists() ? 'Sí' : 'No';
+                
+                fputcsv($file, [
+                    $docente->nombre,
+                    $docente->apellido,
+                    $dni,
+                    $emails,
+                    $esTutor,
+                    $esCoordinador
+                ], ';');
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

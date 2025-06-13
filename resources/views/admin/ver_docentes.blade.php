@@ -52,7 +52,13 @@
             <div class="panel">
                 <h3 class="title">Gestión de Docentes</h3>
                 <p class="subtitle">Listado completo de docentes registrados en el sistema.</p>
-
+                <div class="text-right mb-4">
+                        <a href="{{ route('admin.docentes.export.csv') }}" 
+                        class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <i class="fas fa-file-csv mr-2"></i>
+                            Exportar docentes a CSV
+                        </a>
+                    </div>
                 <!-- Tabla de docentes -->
                 <div class="table-container" 
                     x-data="{ 
@@ -68,6 +74,7 @@
                     x-init="updateCount(); $watch('search', () => updateCount())"
                     x-ref="tableContainer"
                 >
+               
                     <!-- Buscador Mejorado -->
                     <div class="search-container">
                         <div class="search-box">
@@ -89,8 +96,8 @@
                         </div>
                         <div x-show="search.length > 0" class="search-count">
                             Mostrando <span x-text="count"></span> de {{ count($docentes) }} docentes
-                        </div>
-                    </div>
+                        </div>                        
+                    </div>                   
 
                     <table class="table">
                         <thead>
@@ -163,6 +170,7 @@
                             @endforelse
                         </tbody>
                     </table>
+                    
                 </div>
 
                 <!-- Modal de información del docente -->
@@ -415,7 +423,68 @@
                         class="inline-flex items-center text-sm font-semibold text-black hover:text-gray-600 transition-colors">
                         <i class="fas fa-arrow-left mr-2"></i> Volver al panel
                     </a>
+                    
+                </div>
+                 
                 </div>
             </div>
+<script>
+   async function exportToCSV() {
+    const rows = document.querySelectorAll('tbody tr:not([x-show="false"])');
+    let csvContent = "Nombre,Apellido,DNI,Email\n";
+    
+    // Mostrar indicador de carga
+    Alpine.store('isExporting', true);
+    
+    try {
+        for (const row of rows) {
+            const columns = row.querySelectorAll('td');
+            if (columns.length >= 3) {
+                const dni = columns[2].textContent.trim();
+                
+                // Obtener email via API
+                const email = await fetchEmail(dni);
+                
+                csvContent += `"${columns[0].textContent.trim()}","${columns[1].textContent.trim()}","${dni}","${email}"\n`;
+            }
+        }
+        
+        // Descargar archivo
+        downloadCSV(csvContent, 'docentes.csv');
+    } catch (error) {
+        console.error("Error al exportar:", error);
+        alert("Ocurrió un error al generar el CSV");
+    } finally {
+        Alpine.store('isExporting', false);
+    }
+}
+
+async function fetchEmail(dni) {
+    try {
+        const response = await fetch(`/docentes/info/${dni}`);
+        const data = await response.json();
+        
+        if (data.email && data.email.length > 0) {
+            return data.email.map(e => e.email).join(', ');
+        }
+        return '';
+    } catch (error) {
+        console.error(`Error obteniendo email para DNI ${dni}:`, error);
+        return '';
+    }
+}
+
+function downloadCSV(content, filename) {
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
 
 @endsection
