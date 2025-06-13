@@ -74,6 +74,10 @@ EOF
 COPY <<EOF /start.sh
 #!/bin/bash
 
+pwd
+
+ls -la
+
 # Generar clave de aplicación si no existe
 if [ ! -f .env ]; then
     cp .env.example .env
