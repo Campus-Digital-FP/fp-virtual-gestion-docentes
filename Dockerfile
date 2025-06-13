@@ -27,16 +27,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Establecer directorio de trabajo
-WORKDIR /usr/share/nginx/html
+WORKDIR /var/www/html
 
 # Copiar archivos del proyecto
-# COPY . .
-COPY . /usr/share/nginx/html
-
-# Configurar permisos
-# RUN chown -R www-data:www-data /usr/share/nginx/html \
-#     && chmod -R 755 /usr/share/nginx/html/storage \
-#     && chmod -R 755 /usr/share/nginx/html/bootstrap/cache
+COPY . .
 
 # Instalar dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader -vvv
@@ -45,9 +39,9 @@ RUN composer install --no-dev --optimize-autoloader -vvv
 RUN npm install && npm run build
 
 # Configurar permisos
-RUN chown -R www-data:www-data /usr/share/nginx/html \
-    && chmod -R 755 /usr/share/nginx/html/storage \
-    && chmod -R 755 /usr/share/nginx/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Configuración de Supervisor
 COPY <<EOF /etc/supervisor/conf.d/supervisord.conf
