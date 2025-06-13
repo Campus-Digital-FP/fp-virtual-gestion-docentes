@@ -30,7 +30,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 WORKDIR /var/www/html
 
 # Copiar archivos del proyecto
-COPY . .
+COPY . /var/www/html
 
 # Instalar dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader -vvv
