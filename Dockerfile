@@ -1,4 +1,4 @@
-# Usar PHP 8.1 con FPM
+# Usar PHP 8.2 con FPM
 FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
@@ -28,15 +28,16 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Establecer directorio de trabajo
-WORKDIR /var/www/html
+WORKDIR /usr/share/nginx/html
 
 # Copiar archivos del proyecto
-COPY . .
+# COPY . .
+COPY . /usr/share/nginx/html
 
 # Configurar permisos
-# RUN chown -R www-data:www-data /var/www/html \
-#     && chmod -R 755 /var/www/html/storage \
-#     && chmod -R 755 /var/www/html/bootstrap/cache
+# RUN chown -R www-data:www-data /usr/share/nginx/html \
+#     && chmod -R 755 /usr/share/nginx/html/storage \
+#     && chmod -R 755 /usr/share/nginx/html/bootstrap/cache
 
 # Instalar dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader -vvv
@@ -45,34 +46,35 @@ RUN composer install --no-dev --optimize-autoloader -vvv
 RUN npm install && npm run build
 
 # Configurar permisos
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /usr/share/nginx/html \
+    && chmod -R 755 /usr/share/nginx/html/storage \
+    && chmod -R 755 /usr/share/nginx/html/bootstrap/cache
 
 # Configuración de Nginx
-COPY <<EOF /etc/nginx/sites-available/default
-server {
-    listen 80;
-    server_name _;
-    root /var/www/html/public;
-    index index.php index.html index.htm;
-
-    location / {
-        try_files \\$uri \\$uri/ /index.php?\\$query_string;
-    }
-
-    location ~ \\.php\\$ {
-        fastcgi_pass 127.0.0.1:9000;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME \\$document_root\\$fastcgi_script_name;
-        include fastcgi_params;
-    }
-
-    location ~ /\\.ht {
-        deny all;
-    }
-}
-EOF
+# COPY <<EOF /etc/nginx/sites-available/default
+# server {
+#     listen 80;
+#     server_name _;
+#     root /usr/share/nginx/html/public;
+#     index index.php index.html index.htm;
+# 
+#     location / {
+#         try_files $uri $uri/ /index.php?$query_string;
+#     }
+# 
+#     location ~ \.php$ {
+#         # fastcgi_pass 127.0.0.1:9000;
+#         fastcgi_pass _php;
+#         fastcgi_index index.php;
+#         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+#         include fastcgi_params;
+#     }
+# 
+#     location ~ /\.ht {
+#         deny all;
+#     }
+# }
+# EOF
 
 # Configuración de Supervisor
 COPY <<EOF /etc/supervisor/conf.d/supervisord.conf
@@ -83,7 +85,7 @@ logfile=/var/log/supervisor/supervisord.log
 pidfile=/var/run/supervisord.pid
 
 [program:php-fpm]
-command=php-fpm8.1 -F
+command=php-fpm -F
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
@@ -111,10 +113,10 @@ if [ ! -f .env ]; then
 fi
 
 # Generar clave de aplicación
-php artisan key:generate --force
+php artisan key:generate
 
 # Ejecutar migraciones si la base de datos está disponible
-php artisan migrate --force
+php artisan migrate --seed
 
 # Optimizar configuración para producción
 php artisan config:cache
