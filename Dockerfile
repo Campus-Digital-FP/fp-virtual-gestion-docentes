@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     bcmath \
     gd
 
-# Instalar Composer composer install
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Instalar Node.js y npm
@@ -30,78 +30,29 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 WORKDIR /var/www/html
 
 # Copiar archivos del proyecto
-COPY . /var/www/html
+COPY . .
 
 # Instalar dependencias de PHP
-RUN composer install --no-dev --optimize-autoloader -vvv
+RUN composer install --no-dev --optimize-autoloader
 
 # Instalar dependencias de Node.js y compilar assets
 RUN npm install && npm run build
 
-# Configurar permisos
-RUN chown -R www-data:www-data /var/www/html \
+# Crear directorios necesarios y configurar permisos
+RUN mkdir -p storage bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Configuración de Supervisor
-COPY <<EOF /etc/supervisor/conf.d/supervisord.conf
-[supervisord]
-nodaemon=true
-user=root
-logfile=/var/log/supervisor/supervisord.log
-pidfile=/var/run/supervisord.pid
+# Copiar configuración de Supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-[program:php-fpm]
-command=php-fpm -F
-stdout_logfile=/dev/stdout
-stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
-stderr_logfile_maxbytes=0
-autorestart=false
-startretries=0
-
-[program:nginx]
-command=nginx -g 'daemon off;'
-stdout_logfile=/dev/stdout
-stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
-stderr_logfile_maxbytes=0
-autorestart=false
-startretries=0
-EOF
-
-# Script de inicio
-COPY <<EOF /start.sh
-#!/bin/bash
-
-pwd
-
-ls -la
-
-# Generar clave de aplicación si no existe
-if [ ! -f .env ]; then
-    cp .env.example .env
-fi
-
-# Generar clave de aplicación
-php artisan key:generate
-
-# Ejecutar migraciones si la base de datos está disponible
-php artisan migrate --seed
-
-# Optimizar configuración para producción
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-# Iniciar supervisor
-exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-EOF
-
+# Copiar script de inicio
+COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Exponer puerto 80
-EXPOSE 80
+# Exponer puerto 9000 (puerto por defecto de PHP-FPM)
+EXPOSE 9000
 
 # Comando de inicio
 CMD ["/start.sh"]
