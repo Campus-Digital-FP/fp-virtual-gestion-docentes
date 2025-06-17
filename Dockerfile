@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    nginx \
     supervisor \
     && docker-php-ext-install \
     pdo_mysql \
@@ -20,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     bcmath \
     gd
 
-# Instalar Composer composer install
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Instalar Node.js y npm
@@ -28,109 +27,32 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Establecer directorio de trabajo
-WORKDIR /usr/share/nginx/html
+WORKDIR /var/www/html
 
 # Copiar archivos del proyecto
-# COPY . .
-COPY . /usr/share/nginx/html
-
-# Configurar permisos
-# RUN chown -R www-data:www-data /usr/share/nginx/html \
-#     && chmod -R 755 /usr/share/nginx/html/storage \
-#     && chmod -R 755 /usr/share/nginx/html/bootstrap/cache
+COPY . .
 
 # Instalar dependencias de PHP
-RUN composer install --no-dev --optimize-autoloader -vvv
+RUN composer install --no-dev --optimize-autoloader
 
 # Instalar dependencias de Node.js y compilar assets
 RUN npm install && npm run build
 
-# Configurar permisos
-RUN chown -R www-data:www-data /usr/share/nginx/html \
-    && chmod -R 755 /usr/share/nginx/html/storage \
-    && chmod -R 755 /usr/share/nginx/html/bootstrap/cache
+# Crear directorios necesarios y configurar permisos
+RUN mkdir -p storage bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Configuración de Nginx
-# COPY <<EOF /etc/nginx/sites-available/default
-# server {
-#     listen 80;
-#     server_name _;
-#     root /usr/share/nginx/html/public;
-#     index index.php index.html index.htm;
-# 
-#     location / {
-#         try_files $uri $uri/ /index.php?$query_string;
-#     }
-# 
-#     location ~ \.php$ {
-#         # fastcgi_pass 127.0.0.1:9000;
-#         fastcgi_pass _php;
-#         fastcgi_index index.php;
-#         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-#         include fastcgi_params;
-#     }
-# 
-#     location ~ /\.ht {
-#         deny all;
-#     }
-# }
-# EOF
+# Copiar configuración de Supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Configuración de Supervisor
-COPY <<EOF /etc/supervisor/conf.d/supervisord.conf
-[supervisord]
-nodaemon=true
-user=root
-logfile=/var/log/supervisor/supervisord.log
-pidfile=/var/run/supervisord.pid
-
-[program:php-fpm]
-command=php-fpm -F
-stdout_logfile=/dev/stdout
-stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
-stderr_logfile_maxbytes=0
-autorestart=false
-startretries=0
-
-[program:nginx]
-command=nginx -g 'daemon off;'
-stdout_logfile=/dev/stdout
-stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
-stderr_logfile_maxbytes=0
-autorestart=false
-startretries=0
-EOF
-
-# Script de inicio
-COPY <<EOF /start.sh
-#!/bin/bash
-
-# Generar clave de aplicación si no existe
-if [ ! -f .env ]; then
-    cp .env.example .env
-fi
-
-# Generar clave de aplicación
-php artisan key:generate
-
-# Ejecutar migraciones si la base de datos está disponible
-php artisan migrate --seed
-
-# Optimizar configuración para producción
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-# Iniciar supervisor
-exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-EOF
-
+# Copiar script de inicio
+COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Exponer puerto 80
-EXPOSE 80
+# Exponer puerto 9000 (puerto por defecto de PHP-FPM)
+EXPOSE 9000
 
 # Comando de inicio
 CMD ["/start.sh"]
