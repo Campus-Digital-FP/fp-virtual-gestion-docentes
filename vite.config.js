@@ -22,4 +22,7 @@ export default defineConfig({
             '/app': 'http://localhost',
         },
     },
+    base: process.env.NODE_ENV === 'production'
+        ? 'https://gestionprof.fpvirtualaragon.es/'
+        : '/',
 });
