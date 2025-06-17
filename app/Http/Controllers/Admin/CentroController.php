@@ -177,4 +177,60 @@ class CentroController extends Controller
             ], 500);
         }
     }
+
+    public function exportCentrosCSV()
+{
+    // Obtenemos todos los ciclos-modulos por centro primero
+    $centrosCiclosModulos = CentroCiclo::with([
+        'centro:id_centro',
+        'ciclo.modulos' => function($query) {
+            $query->select('modulos.id_modulo', 'modulos.nombre');
+        }
+    ])
+    ->get();
+
+    $headers = [
+        "Content-type" => "text/csv",
+        "Content-Disposition" => "attachment; filename=centros_modulos_docentes_".now()->format('Y-m-d').".csv",
+        "Pragma" => "no-cache",
+        "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+        "Expires" => "0"
+    ];
+
+    $callback = function() use ($centrosCiclosModulos) {
+        $file = fopen('php://output', 'w');
+        fwrite($file, "\xEF\xBB\xBF");
+        fputcsv($file, [
+            'Código Centro',
+            'Código Ciclo',            
+            'Código Módulo',              
+            'DNI Docente',
+            'Nombre Docente',
+            'Apellido Docente'
+        ], ';');
+        
+        foreach ($centrosCiclosModulos as $cc) {
+            foreach ($cc->ciclo->modulos as $modulo) {
+                // Buscamos si existe docencia para este centro-ciclo-modulo
+                $docencia = Docencia::where('id_centro', $cc->id_centro)
+                    ->where('id_ciclo', $cc->id_ciclo)
+                    ->where('id_modulo', $modulo->id_modulo)
+                    ->with('docente:dni,nombre,apellido')
+                    ->first();
+                
+                fputcsv($file, [
+                    $cc->id_centro,
+                    $cc->id_ciclo,
+                    $modulo->id_modulo,
+                    $docencia->docente->dni ?? 'SIN DOCENTE',
+                    $docencia->docente->nombre ?? 'SIN DOCENTE',
+                    $docencia->docente->apellido ?? 'SIN DOCENTE'
+                ], ';');
+            }
+        }
+        fclose($file);
+    };
+
+    return response()->stream($callback, 200, $headers);
+}
 }

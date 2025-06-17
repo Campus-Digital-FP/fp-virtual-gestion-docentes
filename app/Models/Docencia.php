@@ -27,5 +27,9 @@ class Docencia extends Model
         return $this->hasOne(CentroDocente::class, 'dni', 'dni');
     }
 
+    public function centro()
+    {
+        return $this->belongsTo(Centro::class, 'id_centro', 'id_centro');
+    }
 }
 
