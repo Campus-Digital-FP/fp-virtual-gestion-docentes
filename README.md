@@ -115,3 +115,6 @@ Si quieres saber los usuarios que hay tienes que mirar los seeders.
 - ¿Realmente es necesario tener tabla de coordinadores y tabla de tutores existiendo el módulo de Coordinación - Tutoría?
 - Del CSV proporcionado hay cursos que son plantillas por lo que hay que revisar las tablas para borrar toda la basura. ¿Lo mejoramos para que no incluya nunca eso o no se va a usar?
 - ¿Las variables de entorno que hay en el docker-compose.yml de donde salen (por ejemplo: `DB_HOST: "${APP_DB_HOST}"`)?
+- Las contraseñas de los usuarios ahora mismo estaría público en el GitHub y DockerHub. ¿Cómo lo apañamos?
+- Hay que probar los comandos moosh. ¿Cuándo será el momento?
+- ¿Cómo me conencto a la base de datos desde DBeaver?
