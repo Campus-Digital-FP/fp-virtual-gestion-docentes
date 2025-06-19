@@ -30,7 +30,7 @@ class CentrosCiclosModulosSeeder extends Seeder
 
             // Parsear shortname "22002521-ADG201-5367"
             $shortnameParts = explode('-', $shortname);
-            $idCentro = $shortnameParts[0] ?? null;
+            $idCentro = filter_var(trim($shortnameParts[0]), FILTER_SANITIZE_NUMBER_INT) ?? null;
             $idCiclo = $shortnameParts[1] ?? null;
             $idModulo = $shortnameParts[2] ?? null;
 

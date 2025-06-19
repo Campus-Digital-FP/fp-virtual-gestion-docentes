@@ -13,6 +13,9 @@ class CentroSeeder extends Seeder
      */
     public function run()
 {
+    /**
+     * Luego se sobreescribirá en CentrosCiclosModulosSeeder.php
+     */
     DB::table('centros')->insert([
         ['id_centro' => '22002491', 'nombre' => 'Montearagón'],
         ['id_centro' => '22002521', 'nombre' => 'Sierra De Guara'],
