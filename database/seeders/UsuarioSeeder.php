@@ -21,7 +21,7 @@ public function run()
             'id_centro' => '50020125',
             'nombre' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' =>  Hash::make('ZL3OkiDgON8Ya0M4Uj36'),
+            'password' =>  Hash::make('12345678'),
             
         ],
         [

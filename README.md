@@ -43,7 +43,7 @@ Esto hará lo siguiente:
 -   Crea y llena las tablas de la base de datos
 -   Levanta el servidor
 
-PD: Usuario: Admin | Contraseña: ZL3OkiDgON8Ya0M4Uj36
+PD: Usuario: Admin | Contraseña: 12345678
 
 Versiones del proyecto:
 Composer version 2.8.6
@@ -75,3 +75,43 @@ mockery/mockery 1.6.12 Mockery is a simple yet flexible PHP mock object framewor
 nunomaduro/collision 8.7.0 Cli error handling for console/command-line PHP applications.
 pestphp/pest 3.8.0 The elegant PHP Testing Framework.
 pestphp/pest-plugin-laravel 3.1.0 The Pest Laravel Plugin
+
+## Migrar base de datos`
+
+En a la carpeta `/var/moodle-docker-deploy/gestionprof.fpvirtualaragon.es` ejecutamos:
+
+```console
+$ docker compose down
+$ docker compose pull
+$ docker compose up -d
+$ docker exec -it fp-app bash
+```
+
+Dentro del contendoer fp-app:
+
+- Si quieres añadir nuevas migraciones:
+
+```console
+$ php artisan migrate --seed
+```
+
+- Si quieres reiniciar todas las migraciones:
+
+```console
+$ php artisan migrate:fresh --seed
+```
+
+## Login
+
+Hay dos URLs para acceder al login de la aplicación:
+
+- <https://gestionprof.fpvirtualaragon.es/login>: Para los usuarios.
+- <https://gestionprof.fpvirtualaragon.es/admin/login>: Para el admin.
+
+Si quieres saber los usuarios que hay tienes que mirar los seeders.
+
+## Preguntas a resolver
+
+- ¿Realmente es necesario tener tabla de coordinadores y tabla de tutores existiendo el módulo de Coordinación - Tutoría?
+- Del CSV proporcionado hay cursos que son plantillas por lo que hay que revisar las tablas para borrar toda la basura. ¿Lo mejoramos para que no incluya nunca eso o no se va a usar?
+- ¿Las variables de entorno que hay en el docker-compose.yml de donde salen (por ejemplo: `DB_HOST: "${APP_DB_HOST}"`)?
