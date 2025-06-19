@@ -43,7 +43,7 @@ Esto hará lo siguiente:
 -   Crea y llena las tablas de la base de datos
 -   Levanta el servidor
 
-PD: Usuario: Admin | Contraseña: 12345678
+PD: Usuario: Admin | Contraseña: ZL3OkiDgON8Ya0M4Uj36
 
 Versiones del proyecto:
 Composer version 2.8.6
