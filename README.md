@@ -117,4 +117,4 @@ Si quieres saber los usuarios que hay tienes que mirar los seeders.
 - ¿Las variables de entorno que hay en el docker-compose.yml de donde salen (por ejemplo: `DB_HOST: "${APP_DB_HOST}"`)?
 - Las contraseñas de los usuarios ahora mismo estaría público en el GitHub y DockerHub. ¿Cómo lo apañamos?
 - Hay que probar los comandos moosh. ¿Cuándo será el momento?
-- ¿Cómo me conencto a la base de datos desde DBeaver?
+- ¿Cómo me conencto a la base de datos desde DBeaver? Es decir, desde fuera de la máquina local.
