@@ -118,3 +118,34 @@ Si quieres saber los usuarios que hay tienes que mirar los seeders.
 - Las contraseñas de los usuarios ahora mismo estaría público en el GitHub y DockerHub. ¿Cómo lo apañamos?
 - Hay que probar los comandos moosh. ¿Cuándo será el momento?
 - ¿Cómo me conencto a la base de datos desde DBeaver? Es decir, desde fuera de la máquina local.
+
+
+## Crear jefaturas automaticamente
+
+Crear usuarios de Jefaturas de estudios de todos los centros:
+
+```console
+moosh user-create --email "cpifpmontearagon@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "cpifpmontearagon"
+moosh user-create --email "iessguhuesca@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iessguhuesca"
+moosh user-create --email "iesmvbarbastro@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iesmvbarbastro"
+moosh user-create --email "cpifppiramide@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "cpifppiramide"
+moosh user-create --email "ifpeteruel@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "ifpeteruel"
+moosh user-create --email "iessemteruel@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iessemteruel"
+moosh user-create --email "iesvtteruel@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iesvtteruel"
+moosh user-create --email "cpifpbajoaragon@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "cpifpbajoaragon"
+moosh user-create --email "ieslbuzaragoza@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "ieslbuzaragoza"
+moosh user-create --email "iesmmozaragoza@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iesmmozaragoza"
+moosh user-create --email "iesavempace@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iesavempace"
+moosh user-create --email "iesrgazaragoza@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iesrgazaragoza"
+moosh user-create --email "iespsezaragoza@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iespsezaragoza"
+moosh user-create --email "iesmirzaragoza@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iesmirzaragoza"
+moosh user-create --email "cpilosenlaces@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "cpilosenlaces"
+moosh user-create --email "iestiemposmodernos@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "iestiemposmodernos"
+moosh user-create --email "cpifpcorona@educa.aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "cpifpcorona"
+moosh user-create --email "campusdigital@aragon.es" --password "Cambiame!_" --firstname "Jefatura de" --lastname "campusdigital"
+```
+
+Duda: Cuando se haga la migración se borran todos los usuarios? No
+
+
+
