@@ -19,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
-        $this->app['request']->server->set('HTTPS', 'on');
+        // Force HTTPS if the application is running in production
+        if ($this->app->environment('production')) {
+            $this->app['request']->server->set('HTTPS', 'on');
+        }
     }
 }
