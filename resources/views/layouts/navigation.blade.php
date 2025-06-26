@@ -21,8 +21,14 @@
                         {{ __('Alta Docente') }}
                     </x-nav-link>
                 </div>
+                <!-- Añado esto ya que he comentado el dropdown -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('establecer_docencia.index')" :active="request()->routeIs('establecer_docencia.index')">
+                        {{ __('Establecer docencia') }}
+                    </x-nav-link>
+                </div>
                 <!-- Dropdown Establecer -->
-                <div class="hidden sm:flex sm:items-center sm:-my-px sm:ms-10">
+                <!--<div class="hidden sm:flex sm:items-center sm:-my-px sm:ms-10">
                     <x-dropdown align="left" width="48">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -45,7 +51,7 @@
                             </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
-                </div>
+                </div>-->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('docentes.index')" :active="request()->routeIs('docentes.index')">
                         {{ __('Baja Docente') }}

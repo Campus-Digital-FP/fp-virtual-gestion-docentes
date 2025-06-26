@@ -19,14 +19,14 @@
                         <i class="fas fa-user-plus icon-alineado"></i>
                         Dar alta docente
                     </a>
-                    <a href="{{ route('establecer_coordinador.index') }}" class="panel-button">
+                    <!--<a href="{{ route('establecer_coordinador.index') }}" class="panel-button">
                         <i class="fas fa-user-tie icon-alineado"></i>
                         Establecer coordinador/es
                     </a>
                     <a href="{{ route('establecer_tutor.index') }}" class="panel-button">
                         <i class="fas fa-chalkboard-teacher icon-alineado"></i>
                         Establecer tutor/es
-                    </a>
+                    </a>-->
                     <a href="{{ route('establecer_docencia.index') }}" class="panel-button">
                         <i class="fas fa-book icon-alineado"></i>
                         Establecer docencia
