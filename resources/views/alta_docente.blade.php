@@ -58,7 +58,7 @@
 
                     <div class="alta-form-group">
                         <label for="email" class="alta-label">
-                            <i class="fas fa-envelope mr-1"></i> Correo Electrónico:
+                            <i class="fas fa-envelope mr-1"></i> Correo Electrónico (NO USAR el de @fpvirtualaragon.es):
                         </label>
                         <input type="email" name="email" id="email" 
                             class="alta-input @error('email') alta-input-error @enderror" 
