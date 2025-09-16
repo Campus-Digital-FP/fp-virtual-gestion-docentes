@@ -1,0 +1,52 @@
+-- Añado modulo profesional optativo que faltaba
+
+INSERT INTO gestionprof_fpvirtualaragon_es.modulos
+(id_modulo, nombre, created_at, updated_at)
+VALUES('17373', 'Módulo profesional optativo', NULL, NULL);
+
+INSERT INTO gestionprof_fpvirtualaragon_es.ciclo_modulo
+(id_ciclo, id_modulo)
+VALUES('IMS302', '17373');
+
+-- Añado el Ciclo de Desarrollo de Aplicaciones en Lenguaje Python en Campus Digital
+
+INSERT INTO gestionprof_fpvirtualaragon_es.modulos
+(id_modulo, nombre, created_at, updated_at)
+VALUES('19543', 'Análisis de datos con Python', NULL, NULL);
+
+INSERT INTO gestionprof_fpvirtualaragon_es.modulos
+(id_modulo, nombre, created_at, updated_at)
+VALUES('19545', 'Entornos y sintaxis en Python', NULL, NULL);
+
+INSERT INTO gestionprof_fpvirtualaragon_es.modulos
+(id_modulo, nombre, created_at, updated_at)
+VALUES('19547', 'Estructuras de control en Python', NULL, NULL);
+
+INSERT INTO gestionprof_fpvirtualaragon_es.modulos
+(id_modulo, nombre, created_at, updated_at)
+VALUES('19549', 'Programación orientada a objetos', NULL, NULL);
+
+INSERT INTO gestionprof_fpvirtualaragon_es.ciclos
+(id_ciclo, nombre, created_at, updated_at)
+VALUES('CESIFC05', 'Desarrollo de Aplicaciones en Lenguaje Python', NULL, NULL);
+
+INSERT INTO gestionprof_fpvirtualaragon_es.ciclo_modulo
+(id_ciclo, id_modulo)
+VALUES('CESIFC05', '19543');
+
+INSERT INTO gestionprof_fpvirtualaragon_es.ciclo_modulo
+(id_ciclo, id_modulo)
+VALUES('CESIFC05', '19545');
+
+INSERT INTO gestionprof_fpvirtualaragon_es.ciclo_modulo
+(id_ciclo, id_modulo)
+VALUES('CESIFC05', '19547');
+
+INSERT INTO gestionprof_fpvirtualaragon_es.ciclo_modulo
+(id_ciclo, id_modulo)
+VALUES('CESIFC05', '19549');
+
+INSERT INTO gestionprof_fpvirtualaragon_es.centro_ciclo
+(id_centro, id_ciclo)
+VALUES('50020125', 'CESIFC05');
+
