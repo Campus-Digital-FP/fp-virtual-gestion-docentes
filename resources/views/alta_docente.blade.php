@@ -62,7 +62,7 @@
                         </label>
                         <input type="email" name="email" id="email" 
                             class="alta-input @error('email') alta-input-error @enderror" 
-                            required placeholder="docente@ejemplo.com">
+                            required placeholder="docente@centro-educativo.com">
                     </div>
 
                     <div class="alta-form-group">
@@ -79,12 +79,12 @@
 
                     <div class="alta-form-group">
                         <label for="apellido" class="alta-label">
-                            <i class="fas fa-user-tag mr-1"></i> Apellido:
+                            <i class="fas fa-user-tag mr-1"></i> Apellidos:
                         </label>
                         <div class="input-wrapper">
                             <input type="text" name="apellido" id="apellido" 
                                 class="alta-input @error('apellido') alta-input-error @enderror" 
-                                required placeholder="Apellido del docente">
+                                required placeholder="Todos los apellidos del docente">
                             <i id="toggle-apellido" class="fa-solid fa-lock toggle-icon" title="Editar" style="display: none;"></i>
                         </div>
                     </div>
