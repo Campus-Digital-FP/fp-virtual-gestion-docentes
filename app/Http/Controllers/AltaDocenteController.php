@@ -19,6 +19,10 @@ class AltaDocenteController extends Controller
         return view('alta_docente', compact('centro'));
     }
 
+    private function normalizarNombreYApellido($string) {
+        return mb_convert_case(mb_strtolower($string, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+    }
+
 
     public function store(Request $request)
     {
@@ -69,8 +73,8 @@ class AltaDocenteController extends Controller
 
             if ($docente) {
                 // Si el nombre o apellido han cambiado, actualizarlos
-                $nombreNuevo = ucfirst(strtolower($request->nombre));
-                $apellidoNuevo = ucfirst(strtolower($request->apellido));
+                $nombreNuevo = $this->normalizarNombreYApellido($request->nombre);
+                $apellidoNuevo = $this->normalizarNombreYApellido($request->apellido);
 
                 $actualizado = false;
 
@@ -105,8 +109,8 @@ class AltaDocenteController extends Controller
                 // Si no existe, se crea
                 $docente = Docente::create([
                     'dni' => $dni,
-                    'nombre' => ucfirst(strtolower($request->nombre)),
-                    'apellido' => ucfirst(strtolower($request->apellido)),
+                    'nombre' => $this->normalizarNombreYApellido($request->nombre),
+                    'apellido' => $this->normalizarNombreYApellido($request->apellido),
                 ]);
 
                 // Comando moosh para crear nuevo usuario en Moodle ( Uso de escapehellarg para que los comandos sean seguros y no puedan poner algo malicioso los usuarios )
@@ -143,11 +147,14 @@ class AltaDocenteController extends Controller
     {
         $docente = Docente::where('dni', $dni)->first();
 
+        $idCentro = Auth::user()->centro->id_centro;
+
         if ($docente) {
             return response()->json([
                 'existe' => true,
                 'nombre' => $docente->nombre,
                 'apellido' => $docente->apellido,
+                'email' => CentroDocente::where('dni', $dni)->where('id_centro', $idCentro)->value('email') // Obtener email del docente si existe
             ]);
         }
 
