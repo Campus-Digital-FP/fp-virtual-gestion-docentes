@@ -12,7 +12,7 @@ class Docente extends Model
     use HasFactory;
 
     // Especificamos qué campos son asignables masivamente
-    protected $fillable = ['dni', 'nombre', 'apellido'];
+    protected $fillable = ['dni', 'nombre', 'apellido', 'email_virtual', 'de_baja'];
 
 
 public function centros()

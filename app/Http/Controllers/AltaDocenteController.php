@@ -69,8 +69,8 @@ class AltaDocenteController extends Controller
 
             if ($docente) {
                 // Si el nombre o apellido han cambiado, actualizarlos
-                $nombreNuevo = $request->nombre;
-                $apellidoNuevo = $request->apellido;
+                $nombreNuevo = ucfirst(strtolower($request->nombre));
+                $apellidoNuevo = ucfirst(strtolower($request->apellido));
 
                 $actualizado = false;
 
@@ -81,6 +81,11 @@ class AltaDocenteController extends Controller
 
                 if ($docente->apellido !== $apellidoNuevo) {
                     $docente->apellido = $apellidoNuevo;
+                    $actualizado = true;
+                }
+
+                if($docente->de_baja) {
+                    $docente->de_baja = false;
                     $actualizado = true;
                 }
 
@@ -100,8 +105,8 @@ class AltaDocenteController extends Controller
                 // Si no existe, se crea
                 $docente = Docente::create([
                     'dni' => $dni,
-                    'nombre' => $request->nombre,
-                    'apellido' => $request->apellido,
+                    'nombre' => ucfirst(strtolower($request->nombre)),
+                    'apellido' => ucfirst(strtolower($request->apellido)),
                 ]);
 
                 // Comando moosh para crear nuevo usuario en Moodle ( Uso de escapehellarg para que los comandos sean seguros y no puedan poner algo malicioso los usuarios )

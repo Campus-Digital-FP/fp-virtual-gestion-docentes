@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('dni')->unique(); 
             $table->string('nombre'); 
             $table->string('apellido'); 
-            $table->timestamps();  
+            $table->string('email_virtual')->unique();
+            $table->boolean('de_baja')->default(false);
+            // TODO $table->boolean('creado_google_workspace')->default(false);
+            // TODO $table->boolean('creado_moodle')->default(false);
+            $table->timestamps();
         });
     }
 

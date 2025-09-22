@@ -80,17 +80,9 @@ class BajaDocenteController extends Controller
                 $this->ejecutarMoosh($command);
             }*/
 
-
-            // Eliminar asignaciones en la base de datos
-            Tutor::where('dni', $dni)->where('id_centro', $idCentro)->delete();
-            Coordinador::where('dni', $dni)->where('id_centro', $idCentro)->delete();
-            Docencia::where('dni', $dni)->where('id_centro', $idCentro)->delete();
-
-            // Eliminar relación centro-docente
-            DB::table('centro_docente')
-                ->where('dni', $dni)
-                ->where('id_centro', $idCentro)
-                ->delete();
+            Docente::where('dni', $dni)->update([
+                'de_baja' => true,
+            ]);
 
             DB::commit();
 

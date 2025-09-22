@@ -50,3 +50,8 @@ INSERT INTO gestionprof_fpvirtualaragon_es.centro_ciclo
 (id_centro, id_ciclo)
 VALUES('50020125', 'CESIFC05');
 
+-- AÑADIR COLUMNA DE de_baja
+
+ALTER TABLE docentes
+ADD COLUMN de_baja BOOLEAN NOT NULL DEFAULT FALSE
+AFTER email_virtual;

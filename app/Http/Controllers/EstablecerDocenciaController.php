@@ -78,17 +78,6 @@ class EstablecerDocenciaController extends Controller
         ]);
         $idCentro = Auth::user()->id_centro;
 
-        // Verificar si ya existe 
-        $existe = Docencia::where('id_centro', $idCentro)
-            ->where('id_ciclo', $request->id_ciclo)
-            ->where('id_modulo', $request->id_modulo)
-            ->exists();
-
-        if ($existe) {
-            return redirect()->back()->withErrors(['id_modulo' => 'Este módulo ya tiene un docente asignado.']);
-        }
-
-
         // Crear la docencia
         $this->model::create([
             'id_centro' => $idCentro,
@@ -102,9 +91,20 @@ class EstablecerDocenciaController extends Controller
         $command = "moosh course-enrol -u " . escapeshellarg($request->dni) . " " . escapeshellarg($courseName);
 
         $this->ejecutarMoosh($command);*/
-        
+
+        // Verificar si ya existe 
+        $existe = Docencia::where('id_centro', $idCentro)
+            ->where('id_ciclo', $request->id_ciclo)
+            ->where('id_modulo', $request->id_modulo)
+            ->exists();
+
+        if ($existe) {
+            return redirect()->route('establecer_docencia.index')->with('success', 'Docencia asignada correctamente. . ¡¡¡ATENCIÓN!!! Este módulo ya tenía un docente asignado por lo que ahora este módulo tiene DOS O MÁS docentes asignados.');
+        }
+
         return redirect()->route('establecer_docencia.index')->with('success', 'Docencia asignada correctamente.');
-    }
+
+    } 
 
     public function destroy($id)
     {
