@@ -77,9 +77,15 @@
                                     <td>{{ $docente->apellido }}</td>
                                     <td class="uppercase">{{ $docente->dni }}</td>
                                     <td>
-                                        <button @click="showModal = true"  class="button-tiny button-danger" {{ $docente->de_baja ? 'disabled' : '' }}>
+                                        @if($docente->de_baja)
+                                        <button @click="showModal = true"  class="button-tiny button-danger">
                                             <i class="fas fa-trash-alt mr-1"></i>
                                         </button>
+                                        @else
+                                        <button class="button-tiny button-warning" disabled title="El docente ya está de baja">
+                                            <i class="fas fa-arrow-down mr-1"></i>
+                                        </button>
+                                        @endif
 
                                         <!-- Modal -->
                                         <div x-show="showModal" class="modal">
